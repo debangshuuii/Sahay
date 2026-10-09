@@ -1,0 +1,263 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Bengali:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap');
+
+:root {
+  /* Color Palette */
+  --color-primary: #0f4c3a;
+  --color-primary-hover: #0a382a;
+  --color-primary-light: #e6f3ef;
+  --color-primary-border: #99cfbe;
+
+  --color-bg-canvas: #faf8f5;
+  --color-bg-card: #ffffff;
+  --color-bg-subtle: #f3efe6;
+  --color-bg-elevated: #ffffff;
+
+  --color-text-main: #1c1917;
+  --color-text-muted: #57534e;
+  --color-text-light: #78716c;
+  --color-border: #e7e5e4;
+  --color-border-hover: #d6d3d1;
+
+  --color-amber-accent: #b45309;
+  --color-amber-bg: #fffbeb;
+  --color-amber-border: #fde68a;
+
+  --color-error: #b91c1c;
+  --color-error-bg: #fef2f2;
+  --color-error-border: #fecaca;
+
+  --color-success: #15803d;
+  --color-success-bg: #f0fdf4;
+  --color-success-border: #bbf7d0;
+
+  /* Typography */
+  --font-sans: 'Inter', 'Noto Sans Bengali', 'Noto Sans Devanagari', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-size-base: 16px;
+  --line-height-base: 1.6;
+
+  /* Spacing */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+
+  /* Radii */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-full: 9999px;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.04);
+}
+
+/* Accessibility Modes */
+body.font-large {
+  --font-size-base: 18px;
+}
+body.font-extralarge {
+  --font-size-base: 20px;
+}
+
+body.high-contrast {
+  --color-primary: #052e16;
+  --color-primary-hover: #000000;
+  --color-primary-light: #dcfce7;
+  --color-bg-canvas: #ffffff;
+  --color-bg-card: #ffffff;
+  --color-bg-subtle: #f5f5f5;
+  --color-text-main: #000000;
+  --color-text-muted: #1f2937;
+  --color-border: #737373;
+  --color-border-hover: #000000;
+  --color-amber-accent: #92400e;
+  --color-amber-bg: #fef3c7;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: var(--font-size-base);
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--color-bg-canvas);
+  color: var(--color-text-main);
+  line-height: var(--line-height-base);
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+
+/* Base Form Elements & Focus */
+button, input, select, textarea {
+  font-family: inherit;
+  font-size: inherit;
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* Utility Containers */
+.container {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 var(--space-4);
+}
+
+@media (min-width: 768px) {
+  .container {
+    padding: 0 var(--space-6);
+  }
+}
+
+/* Common Card & Panels */
+.card {
+  background-color: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-5);
+  box-shadow: var(--shadow-sm);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  border-color: var(--color-border-hover);
+}
+
+/* Badges */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.2rem 0.65rem;
+  border-radius: var(--radius-full);
+  font-size: 0.825rem;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.badge-primary {
+  background-color: var(--color-primary-light);
+  color: var(--color-primary);
+  border: 1px solid var(--color-primary-border);
+}
+
+.badge-amber {
+  background-color: var(--color-amber-bg);
+  color: var(--color-amber-accent);
+  border: 1px solid var(--color-amber-border);
+}
+
+.badge-success {
+  background-color: var(--color-success-bg);
+  color: var(--color-success);
+  border: 1px solid var(--color-success-border);
+}
+
+.badge-neutral {
+  background-color: var(--color-bg-subtle);
+  color: var(--color-text-muted);
+  border: 1px solid var(--color-border);
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.65rem 1.25rem;
+  border-radius: var(--radius-md);
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: all 0.15s ease-in-out;
+  text-decoration: none;
+  min-height: 44px; /* Accessible touch target */
+}
+
+.btn-primary {
+  background-color: var(--color-primary);
+  color: #ffffff;
+}
+
+.btn-primary:hover {
+  background-color: var(--color-primary-hover);
+}
+
+.btn-secondary {
+  background-color: var(--color-bg-card);
+  border-color: var(--color-border);
+  color: var(--color-text-main);
+}
+
+.btn-secondary:hover {
+  background-color: var(--color-bg-subtle);
+  border-color: var(--color-border-hover);
+}
+
+.btn-amber {
+  background-color: var(--color-amber-accent);
+  color: #ffffff;
+}
+
+.btn-amber:hover {
+  background-color: #92400e;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade {
+  animation: fadeIn 0.25s ease-out forwards;
+}
+
+/* Responsive Grid Utilities */
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-6);
+}
+
+@media (min-width: 840px) {
+  .grid-2 {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.grid-3 {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-5);
+}
+
+@media (min-width: 640px) {
+  .grid-3 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .grid-3 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
