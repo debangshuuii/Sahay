@@ -37,7 +37,7 @@ export interface TranslationStrings {
   extractingOcr: string;
   generatingExplanation: string;
   
-  // 7 Core Sections
+  // Core Sections
   tabSimpleWords: string;
   tabSimpleWordsDesc: string;
   whyReceivedTitle: string;
@@ -79,7 +79,7 @@ export interface TranslationStrings {
   speakTranscript: string;
   suggestedQuestions: string;
   
-  // Voice Modal / Assistant
+  // Voice Assistant
   voiceTitle: string;
   voiceSubtitle: string;
   voiceStart: string;
@@ -88,16 +88,18 @@ export interface TranslationStrings {
   voiceStopAudio: string;
   voicePermissionNote: string;
   
-  // Procedure Guide
+  // Procedures Guide
   procedureGuideTitle: string;
   procedureGuideSubtitle: string;
   searchProcedures: string;
   
-  // History & Settings
+  // History & Storage
   historyTitle: string;
   historyEmpty: string;
   clearHistory: string;
   deleteDoc: string;
+  
+  // Settings & Accessibility
   settingsTitle: string;
   fontSize: string;
   fontSizeNormal: string;
@@ -118,6 +120,12 @@ export interface TranslationStrings {
   confidenceMedium: string;
   confidenceLow: string;
   uncertaintiesTitle: string;
+
+  // Enhancements
+  tabDraftGrievance: string;
+  shareWhatsApp: string;
+  printSummary: string;
+  addToCalendar: string;
 }
 
 export const translations: Record<Language, TranslationStrings> = {
@@ -138,80 +146,80 @@ export const translations: Record<Language, TranslationStrings> = {
     step3Title: "3. Actionable Checklist",
     step3Desc: "Get an ordered checklist of exact steps, verified deadlines, required paperwork, and official portal links.",
     categoriesTitle: "Common Documents Handled",
-    catBills: "Electricity & Utility Bills",
-    catCertificates: "Caste, Income & Domicile Certificates",
-    catLegal: "Court, Panchayat & Municipality Notices",
-    catGovtSchemes: "Ration Cards, Swasthya Sathi & DBT",
-    catBankNotices: "Bank KYC & Account Freeze Warnings",
-    catEducation: "Scholarships & Exam Admittance",
-    aiDisclaimer: "SAHAY provides administrative explanations and verified official procedural guidance. It does not replace official government decisions or professional legal advice.",
+    catBills: "Electricity & Utility Demand Notices",
+    catCertificates: "Caste, Income & Domicile Letters",
+    catLegal: "Court, Panchayat & Municipal Orders",
+    catGovtSchemes: "Ration, Ayushman & Welfare Letters",
+    catBankNotices: "Bank KYC & Account Alerts",
+    catEducation: "Scholarship & Admission Directives",
+    aiDisclaimer: "SAHAY helps clarify administrative information. It is not a replacement for official orders or certified legal counsel.",
     
-    dashboardGreeting: "Namaste & Welcome. How can we assist your paperwork today?",
-    uploadAreaTitle: "Upload an Official Document",
-    uploadAreaSubtitle: "Drag & drop your PDF or photo, or take a picture with your phone camera",
-    dragDropText: "Drop your file here, or browse from device",
-    orChooseFile: "Browse File",
-    cameraCapture: "Use Camera",
-    supportedFormats: "Supports PDF, JPG, PNG (Max 15MB). Multilingual OCR enabled.",
-    processingDocument: "Reading document text and detecting language...",
-    extractingOcr: "Extracting key dates, reference numbers, and instructions...",
-    generatingExplanation: "Translating bureaucratic jargon into plain, actionable guidance...",
+    dashboardGreeting: "Citizen Document Workspace",
+    uploadAreaTitle: "Upload Official Notice or Document",
+    uploadAreaSubtitle: "PDF, JPG, PNG or WebP accepted (Max 15MB). Scanned photos supported.",
+    dragDropText: "Drag and drop your document here, or",
+    orChooseFile: "Choose File from Device",
+    cameraCapture: "Snap Photograph",
+    supportedFormats: "Supports official letters, bills, court notices, applications & government forms",
+    processingDocument: "Reading administrative notice...",
+    extractingOcr: "Extracting official notice reference, dates, and amounts...",
+    generatingExplanation: "Structuring citizen explanation and verified steps...",
     
-    tabSimpleWords: "In Simple Words",
-    tabSimpleWordsDesc: "A clear breakdown of what this document is and why it matters to you.",
-    whyReceivedTitle: "Why did you receive this?",
-    whatItMeansTitle: "What does this mean for you?",
+    tabSimpleWords: "Plain Explanation",
+    tabSimpleWordsDesc: "Clear summary of this document in plain language",
+    whyReceivedTitle: "Why You Received This Document",
+    whatItMeansTitle: "What This Means For You",
     
-    tabActionSteps: "What You Need To Do",
-    tabActionStepsDesc: "Step-by-step checklist prioritized by importance.",
-    requiredBadge: "Mandatory",
+    tabActionSteps: "Action Checklist",
+    tabActionStepsDesc: "Ordered steps required to resolve this matter",
+    requiredBadge: "Mandatory Step",
     recommendedBadge: "Recommended",
-    unverifiedBadge: "Unconfirmed",
-    stepCompleted: "Done",
-    allStepsDone: "All steps completed! Keep your receipts safely.",
+    unverifiedBadge: "Verify at Office",
+    stepCompleted: "Steps Completed",
+    allStepsDone: "All action items have been marked as completed!",
     
-    tabDeadlines: "Important Dates",
-    deadlineWarning: "Deadline approaching! Verify timely submission.",
-    noDeadlinesFound: "No explicit cut-off deadline detected in this document.",
-    dateContext: "Original reference in text",
+    tabDeadlines: "Dates & Deadlines",
+    deadlineWarning: "Strict cut-off date indicated. Late action may incur penalties or disconnection.",
+    noDeadlinesFound: "No explicit hard deadline detected in this document.",
+    dateContext: "Days Remaining",
     
-    tabRequiredDocs: "Documents You May Need",
-    docsCollectedCount: "collected",
-    markCollected: "Mark as ready",
+    tabRequiredDocs: "Documents Needed",
+    docsCollectedCount: "Collected",
+    markCollected: "Mark as collected",
     
-    tabKeyDetails: "Important Details",
-    maskSensitive: "Hide Sensitive Info",
-    unmaskSensitive: "Show Full Info",
-    sensitiveProtected: "Sensitive numbers (Aadhaar/Account/Mobile) are masked for your privacy.",
+    tabKeyDetails: "Key Facts & Identifiers",
+    maskSensitive: "Mask Sensitive IDs",
+    unmaskSensitive: "Reveal Full Details",
+    sensitiveProtected: "Aadhaar, Bank Account, and Personal IDs are masked for privacy compliance.",
     
     tabSources: "Official Sources",
     officialVerifiedBadge: "Verified Official Portal",
-    unverifiedNotice: "Third-party or unofficial source—verify at local government office.",
-    visitOfficialPortal: "Open Official Portal",
-    lastChecked: "Verified on",
+    unverifiedNotice: "Informational advisory — verify directly with the local department counter.",
+    visitOfficialPortal: "Visit Official Portal",
+    lastChecked: "Last Verified",
     
-    tabAskQuestion: "Ask About This Document",
-    askPlaceholder: "Ask anything about this document in English, Bengali, or Hindi...",
+    tabAskQuestion: "Ask About Notice",
+    askPlaceholder: "Ask any question about this document in English, Hindi, or Bengali...",
     sendBtn: "Ask",
     voiceBtn: "Voice",
-    listening: "Listening... speak now in Bengali, Hindi, or English",
-    speakTranscript: "Your spoken question",
-    suggestedQuestions: "Helpful questions you can ask:",
+    listening: "Listening... Speak your question now",
+    speakTranscript: "Your Question",
+    suggestedQuestions: "Suggested Questions:",
     
     voiceTitle: "Voice Assistant",
-    voiceSubtitle: "Speak naturally in your mother tongue. We'll transcribe, answer, and read it back to you.",
-    voiceStart: "Tap to Speak",
-    voiceStop: "Stop Recording",
+    voiceSubtitle: "Ask questions naturally using your voice. The assistant will answer and read aloud.",
+    voiceStart: "Start Voice",
+    voiceStop: "Stop Voice",
     voicePlayAnswer: "Listen to Answer",
-    voiceStopAudio: "Stop Voice",
-    voicePermissionNote: "Your voice is processed locally in browser. No microphone data is stored.",
+    voiceStopAudio: "Mute Audio",
+    voicePermissionNote: "Audio is processed locally in your browser for privacy.",
     
-    procedureGuideTitle: "Official Procedure Guide",
-    procedureGuideSubtitle: "Search trusted government schemes, certificates, and application steps.",
-    searchProcedures: "Search official procedures (e.g. WBSEDCL payment, Aadhaar Ration link, Income Certificate)...",
+    procedureGuideTitle: "Official Procedure Directory",
+    procedureGuideSubtitle: "Step-by-step guides for government schemes and citizen services",
+    searchProcedures: "Search procedures (e.g. Electricity Bill, DigiLocker, Caste Certificate)...",
     
     historyTitle: "Saved Documents",
-    historyEmpty: "No documents saved. Uploaded documents are kept only in your local session unless you choose to bookmark them.",
+    historyEmpty: "No documents saved yet. Upload or try a sample document.",
     clearHistory: "Clear All History",
     deleteDoc: "Delete Document",
     settingsTitle: "Accessibility & Privacy Settings",
@@ -233,7 +241,13 @@ export const translations: Record<Language, TranslationStrings> = {
     confidenceMedium: "Moderate Confidence",
     confidenceLow: "Low Confidence - Review Carefully",
     uncertaintiesTitle: "Points Requiring Clarification",
+
+    tabDraftGrievance: "Draft Response & RTI",
+    shareWhatsApp: "Share via WhatsApp",
+    printSummary: "Print / Save PDF",
+    addToCalendar: "Add to Calendar (.ics)",
   },
+
   bn: {
     appName: "সহায় (SAHAY)",
     tagline: "সরকারি কাগজপত্র সহজে বুঝুন। পরবর্তী পদক্ষেপ জানুন।",
@@ -253,58 +267,53 @@ export const translations: Record<Language, TranslationStrings> = {
     categoriesTitle: "যেসব কাগজপত্র সহজে বুঝতে সাহায্য করে",
     catBills: "বিদ্যুৎ ও জল বিলের নোটিশ",
     catCertificates: "জাতিগত, আয় ও স্থায়ী বাসিন্দার সার্টিফিকেট",
-    catLegal: "কোর্ট, পঞ্চায়েত বা পুরসভার নোটিশ",
-    catGovtSchemes: "রেশন কার্ড, স্বাস্থ্যসাথী ও সরকারি অনুদান",
-    catBankNotices: "ব্যাঙ্ক কেওয়াইসি ও অ্যাকাউন্ট সংক্রান্ত চিঠি",
-    catEducation: "স্কলারশিপ ও ভর্তি সংক্রান্ত কাগজপত্র",
-    aiDisclaimer: "সহায় (SAHAY) আপনাকে সহায়তার উদ্দেশ্যে প্রশাসনিক নিয়ম ব্যাখ্যা করে। এটি সরকারের চূড়ান্ত আদেশ বা আইনি বিকল্প নয়।",
+    catLegal: "আদালত, পঞ্চায়েত ও পুরসভার নির্দেশিকা",
+    catGovtSchemes: "রেশন কার্ড, স্বাস্থ্যসাথী ও সরকারি স্কিম",
+    catBankNotices: "ব্যাঙ্ক কেওয়াইসি ও একাউন্ট সতর্কবার্তা",
+    catEducation: "স্কলারশিপ ও ভর্তি সংক্রান্ত নোটিশ",
+    aiDisclaimer: "সহায় প্রশাসনিক বিষয় সহজে বুঝতে সাহায্য করে। এটি আদালতের সরাসরি রায় বা অফিসিয়াল আদেশের বিকল্প নয়।",
     
-    dashboardGreeting: "নমস্কার! আজ কোন সরকারি কাগজপত্র বুঝতে সাহায্য করতে পারি?",
-    uploadAreaTitle: "অফিসিয়াল নথি আপলোড করুন",
-    uploadAreaSubtitle: "পিডিএফ বা ছবি ড্রপ করুন, অথবা আপনার মোবাইলের ক্যামেরা দিয়ে সরাসরি ছবি তুলুন",
-    dragDropText: "ফাইলটি এখানে টেনে আনুন, অথবা ডিভাইস থেকে বেছে নিন",
-    orChooseFile: "ফাইল বাছুন",
-    cameraCapture: "ক্যামেরা চালু করুন",
-    supportedFormats: "পিডিএফ, জেপিজি, পিএনজি (সর্বোচ্চ ১৫ মেগাবাইট)। বাংলা ও হিন্দি ওসিআর সক্রিয়।",
-    processingDocument: "নথির লেখা পড়া হচ্ছে এবং ভাষা চিহ্নিত করা হচ্ছে...",
-    extractingOcr: "জরুরি তারিখ, রেফারেন্স নম্বর এবং নির্দেশাবলী বিশ্লেষণ করা হচ্ছে...",
-    generatingExplanation: "সহজ ভাষায় সম্পূর্ণ ব্যাখ্যা ও করণীয় তালিকা প্রস্তুত হচ্ছে...",
+    dashboardGreeting: "নাগরিক নথি ড্যাশবোর্ড",
+    uploadAreaTitle: "সরকারি নোটিশ বা চিঠি আপলোড করুন",
+    uploadAreaSubtitle: "পিডিএফ বা স্পষ্ট ছবি (সর্বোচ্চ ১৫ মেগাবাইট) দিন। মোবাইলের ফটো সমর্থিত।",
+    dragDropText: "ফাইলটি এখানে টেনে আনুন, অথবা",
+    orChooseFile: "ডিভাইস থেকে ফাইল বেছে নিন",
+    cameraCapture: "ছবি তুলুন",
+    supportedFormats: "সরকারি নোটিশ, বিদ্যুৎ বিল, পুরসভার চিঠি এবং আবেদনপত্র",
+    processingDocument: "নথিটি পড়া হচ্ছে...",
+    extractingOcr: "নথি নম্বর, তারিখ এবং বকেয়া টাকা খোঁজা হচ্ছে...",
+    generatingExplanation: "সহজ ভাষায় ব্যাখ্যা ও করণীয় তৈরি হচ্ছে...",
     
     tabSimpleWords: "সহজ ভাষায় অর্থ",
-    tabSimpleWordsDesc: "এই নথিটি আসলে কী এবং আপনার জন্য কেন এটি জরুরি।",
-    whyReceivedTitle: "আপনি এটি কেন পেয়েছেন?",
-    whatItMeansTitle: "এর ফলে আপনাকে কী বুঝতে হবে?",
+    tabSimpleWordsDesc: "এই নথির মূল বক্তব্য সহজ বাংলায়",
+    whyReceivedTitle: "এই চিঠি কেন পেয়েছেন",
+    whatItMeansTitle: "আপনার করণীয় ও আইনি প্রভাব",
     
-    tabActionSteps: "আপনাকে যা করতে হবে",
-    tabActionStepsDesc: "গুরুত্ব অনুযায়ী সাজানো করণীয় কাজের তালিকা।",
-    requiredBadge: "বাধ্যতামূলক",
-    recommendedBadge: "পরামর্শযোগ্য",
-    unverifiedBadge: "অযাচাইকৃত",
-    stepCompleted: "সম্পন্ন হয়েছে",
-  hi: {
-    appName: "सहाय (SAHAY)",
-    tagline: "सरकारी कागज़ात आसानी से समझें। जानिए अगला कदम।",
-    heroHeadline: "सरकारी दस्तावेज़, आपकी अपनी भाषा में आसान समझ।",
-    heroSubheadline: "कोई भी नोटिस, बिल या प्रमाण-पत्र अपलोड करें। बिना किसी बिचौलिए के जानें कि आपको क्या करना है।",
-    explainDocumentBtn: "दस्तावेज़ का अर्थ समझें",
-    trySampleBtn: "नमूना दस्तावेज़ आज़माएं",
-    privacyBadge: "सुरक्षित और निजी",
-    privacyGuarantee: "आपकी सहमति के बिना आपका दस्तावेज़ किसी भी बाहरी क्लाउड पर स्थायी रूप से सुरक्षित नहीं रखा जाता।",
-    howItWorksTitle: "सहाय कैसे काम करता है",
-    step1Title: "१. फ़ाइल या फ़ोटो दें",
-    step1Desc: "कोई भी सरकारी चिट्ठी, बिजली बिल या नोटिस की फ़ोटो लें या पीडीएफ अपलोड करें। हिंदी, बंगाली और अंग्रेज़ी समर्थিত।",
-    step2Title: "२. सरल शब्दों में अर्थ",
-    step2Desc: "कठिन सरकारी नियमों और शब्दों को सरल रोज़मर्रा की भाषा में समझें।",
-    step3Title: "३. स्पष्ट चेकलिस्ट",
-    step3Desc: "अंतिम तारीख़, ज़रूरी दस्तावेज़ और आधिकारिक पोर्टल के सीधे लिंक के साथ चरण-दर-चरण सूची प्राप्त करें।",
-    categoriesTitle: "अक्सर समझे जाने वाले दस्तावेज़",
-    catBills: "बिजली और पानी बिल नोटिस",
-    catCertificates: "जाति, आय और निवास प्रमाण-पत्र",
-    catLegal: "कोर्ट, पंचायत और नगरपालिका नोटिस",
-    catGovtSchemes: "राशन कार्ड, आयुष्मान व सरकारी योजनाएं",
-    catBankNotices: "बैंक केवाईसी व खाता संबंधी नोटिस",
-    catEducation: "छात्रवृत्ति व दाखिला पत्र",
-    aiDisclaimer: "सहाय (SAHAY) प्रशासनिक जानकारी को आसान बनाने में सहायता करता है। यह आधिकारिक सरकारी आदेश या क़ानूनी सलाह का विकल्प नहीं है।",��ক্ষের তথ্য—অফিসে গিয়ে যাচাই করুন।",
+    tabActionSteps: "করণীয় পদক্ষেপ (চেকলিস্ট)",
+    tabActionStepsDesc: "সমস্যা মেটাতে পরপর এই কাজগুলি করুন",
+    requiredBadge: "বাধ্যতামূলক ধাপ",
+    recommendedBadge: "প্রয়োজনীয়",
+    unverifiedBadge: "অফিসে যাচাই করুন",
+    stepCompleted: "ধাপ সম্পন্ন হয়েছে",
+    allStepsDone: "সবকটি কাজ সম্পন্ন হয়েছে হিসেবে চিহ্নিত করা হয়েছে!",
+    
+    tabDeadlines: "সময়সীমা ও জরুরি তারিখ",
+    deadlineWarning: "নির্দিষ্ট সময়ের মধ্যে কাজ না করলে সংযোগ কাটা বা জরিমানার ঝুঁকি আছে।",
+    noDeadlinesFound: "এই নথিতে কোনো নির্দিষ্ট সময়সীমা উল্লেখ নেই।",
+    dateContext: "দিন বাকি",
+    
+    tabRequiredDocs: "প্রয়োজনীয় কাগজপত্র",
+    docsCollectedCount: "সংগ্রহ হয়েছে",
+    markCollected: "সংগ্রহ করা হয়েছে চিহ্নিত করুন",
+    
+    tabKeyDetails: "মূল তথ্য ও নম্বর",
+    maskSensitive: "ব্যক্তিগত নম্বর গোপন রাখুন",
+    unmaskSensitive: "সম্পূর্ণ নম্বর দেখুন",
+    sensitiveProtected: "সুরক্ষার স্বার্থে আধার, ব্যাঙ্ক একাউন্ট এবং ব্যক্তিগত নম্বর মাস্ক করা রয়েছে।",
+    
+    tabSources: "অফিসিয়াল সরকারি উৎস",
+    officialVerifiedBadge: "যাচাইকৃত সরকারি পোর্টাল",
+    unverifiedNotice: "অফিসিয়াল তথ্য—প্রয়োজনে সরাসরি অফিসে গিয়ে যাচাই করুন।",
     visitOfficialPortal: "সরকারি ওয়েবসাইট খুলুন",
     lastChecked: "যাচাইয়ের তারিখ",
     
@@ -351,9 +360,15 @@ export const translations: Record<Language, TranslationStrings> = {
     confidenceMedium: "মাঝারি নির্ভুলতা",
     confidenceLow: "সতর্কতা প্রয়োজন - সরাসরি মিলিয়ে নিন",
     uncertaintiesTitle: "যেসব বিষয় স্পষ্ট নয় বা যাচাই প্রয়োজন",
+
+    tabDraftGrievance: "আইনি চিঠি ও RTI আবেদন",
+    shareWhatsApp: "হোয়াটসঅ্যাপে শেয়ার করুন",
+    printSummary: "প্রিন্ট / পিডিএফ সেভ করুন",
+    addToCalendar: "ক্যালেন্ডারে যোগ করুন (.ics)",
   },
+
   hi: {
-    appName: "जीवनसाथी एआई",
+    appName: "सहाय (SAHAY)",
     tagline: "सरकारी कागज़ात आसानी से समझें। जानिए अगला कदम।",
     heroHeadline: "सरकारी दस्तावेज़, आपकी अपनी भाषा में आसान समझ।",
     heroSubheadline: "कोई भी नोटिस, बिल या प्रमाण-पत्र अपलोड करें। बिना किसी बिचौलिए के जानें कि आपको क्या करना है।",
@@ -361,7 +376,7 @@ export const translations: Record<Language, TranslationStrings> = {
     trySampleBtn: "नमूना दस्तावेज़ आज़माएं",
     privacyBadge: "सुरक्षित और निजी",
     privacyGuarantee: "आपकी सहमति के बिना आपका दस्तावेज़ किसी भी बाहरी क्लाउड पर स्थायी रूप से सुरक्षित नहीं रखा जाता।",
-    howItWorksTitle: "जीवनसाथी कैसे काम करता है",
+    howItWorksTitle: "सहाय कैसे काम करता है",
     step1Title: "१. फ़ाइल या फ़ोटो दें",
     step1Desc: "कोई भी सरकारी चिट्ठी, बिजली बिल या नोटिस की फ़ोटो लें या पीडीएफ अपलोड करें। हिंदी, बंगाली और अंग्रेज़ी समर्थित।",
     step2Title: "२. सरल शब्दों में अर्थ",
@@ -375,84 +390,84 @@ export const translations: Record<Language, TranslationStrings> = {
     catGovtSchemes: "राशन कार्ड, आयुष्मान व सरकारी योजनाएं",
     catBankNotices: "बैंक केवाईसी व खाता संबंधी नोटिस",
     catEducation: "छात्रवृत्ति व दाखिला पत्र",
-    aiDisclaimer: "जीवनसाथी एआई प्रशासनिक जानकारी को आसान बनाने में सहायता करता है। यह आधिकारिक सरकारी आदेश या क़ानूनी सलाह का विकल्प नहीं है।",
+    aiDisclaimer: "सहाय (SAHAY) प्रशासनिक जानकारी को आसान बनाने में सहायता करता है। यह आधिकारिक सरकारी आदेश या क़ानूनी सलाह का विकल्प नहीं है।",
     
-    dashboardGreeting: "नमस्ते! आज हम आपके किस कागज़ात को समझने में मदद कर सकते हैं?",
-    uploadAreaTitle: "सरकारी दस्तावेज़ अपलोड करें",
-    uploadAreaSubtitle: "पीडीएफ या फ़ोटो खींचकर डालें, या अपने फ़ोन कैमरे से तुरंत फ़ोटो लें",
-    dragDropText: "फ़ाइल यहाँ खींचें, या डिवाइस से चुनें",
-    orChooseFile: "फ़ाइल चुनें",
-    cameraCapture: "कैमरा खोलें",
-    supportedFormats: "पीडीएफ, जेपीजी, पीएनजी (अधिकतम 15MB)। हिंदी व बंगाली ओसीआर सक्रिय।",
-    processingDocument: "दस्तावेज़ पढ़ा जा रहा है और भाषा पहचानी जा रही है...",
-    extractingOcr: "ज़रूरी तारीख़ें, संदर्भ संख्या और नियम निकाले जा रहे हैं...",
-    generatingExplanation: "सरल भाषा में व्याख्या और कार्य सूची तैयार की जा रही है...",
+    dashboardGreeting: "नागरिक दस्तावेज़ वर्कस्पेस",
+    uploadAreaTitle: "सरकारी नोटिस या दस्तावेज़ अपलोड करें",
+    uploadAreaSubtitle: "पीडीएफ या साफ़ फ़ोटो (अधिकतम 15MB)। मोबाइल फ़ोटो समर्थित।",
+    dragDropText: "फ़ाइल को यहाँ खींचें या",
+    orChooseFile: "डिवाइस से फ़ाइल चुनें",
+    cameraCapture: "फ़ोटो लें",
+    supportedFormats: "सरकारी नोटिस, बिजली बिल, नगर पालिका पत्र और आवेदन प्रपत्र",
+    processingDocument: "दस्तावेज़ पढ़ा जा रहा है...",
+    extractingOcr: "नोटिस संख्या, तारीख़ और देय राशि की पहचान हो रही है...",
+    generatingExplanation: "सरल भाषा में व्याख्या एवं कार्यवाही सूची तैयार हो रही है...",
     
-    tabSimpleWords: "सरल शब्दों में",
-    tabSimpleWordsDesc: "यह दस्तावेज़ वास्तव में क्या है और आपके लिए इसका क्या अर्थ है।",
-    whyReceivedTitle: "यह आपको क्यों मिला?",
-    whatItMeansTitle: "इसका आपके लिए क्या अर्थ है?",
+    tabSimpleWords: "सरल भाषा में अर्थ",
+    tabSimpleWordsDesc: "इस दस्तावेज़ का सार सरल हिंदी में",
+    whyReceivedTitle: "यह दस्तावेज़ क्यों प्राप्त हुआ",
+    whatItMeansTitle: "आपके लिए इसका अर्थ एवं प्रभाव",
     
-    tabActionSteps: "आपको क्या करना होगा",
-    tabActionStepsDesc: "प्राथमिकता के अनुसार व्यवस्थित कार्य सूची।",
-    requiredBadge: "अनिवार्य",
-    recommendedBadge: "सलाह",
-    unverifiedBadge: "अपुष्ट",
-    stepCompleted: "पूर्ण",
-    allStepsDone: "सभी काम पूरे हो गए! पावती रसीद को सुरक्षित रखें।",
+    tabActionSteps: "आवश्यक कार्यवाही चेकलिस्ट",
+    tabActionStepsDesc: "मामले के समाधान हेतु चरणबद्ध कदम",
+    requiredBadge: "अनिवार्य कदम",
+    recommendedBadge: "अनुशंसित",
+    unverifiedBadge: "कार्यालय में सत्यापित करें",
+    stepCompleted: "कदम पूर्ण हुए",
+    allStepsDone: "सभी कार्य पूर्ण के रूप में चिह्नित किए गए हैं!",
     
-    tabDeadlines: "महत्वपूर्ण तारीख़ें",
-    deadlineWarning: "अंतिम तारीख़ नज़दीक है! समय पर कार्रवाई करें।",
-    noDeadlinesFound: "इस दस्तावेज़ में कोई स्पष्ट अंतिम समय-सीमा नहीं मिली।",
-    dateContext: "मूल दस्तावेज़ में उल्लेख",
+    tabDeadlines: "महत्वपूर्ण तिथियां व समय-सीमा",
+    deadlineWarning: "समय-सीमा का ध्यान रखें। देरी होने पर जुर्माना या सेवा विच्छेद हो सकता है।",
+    noDeadlinesFound: "इस दस्तावेज़ में कोई स्पष्ट अंतिम तिथि नहीं मिली।",
+    dateContext: "दिन शेष",
     
     tabRequiredDocs: "आवश्यक दस्तावेज़",
-    docsCollectedCount: "तैयार हैं",
-    markCollected: "तैयार चिह्नित करें",
+    docsCollectedCount: "एकत्रित",
+    markCollected: "एकत्रित चिह्नित करें",
     
-    tabKeyDetails: "ज़रूरी विवरण",
-    maskSensitive: "संवेदनशील जानकारी छिपाएं",
-    unmaskSensitive: "पूरी जानकारी देखें",
-    sensitiveProtected: "आपकी सुरक्षा के लिए आधार या खाता संख्या सुरक्षित रूप से आंशिक छिपाई गई है।",
+    tabKeyDetails: "प्रमुख विवरण एवं संख्या",
+    maskSensitive: "संवेदनशील विवरण छुपाएं",
+    unmaskSensitive: "पूरा विवरण देखें",
+    sensitiveProtected: "गोपनीयता हेतु आधार, बैंक खाता एवं व्यक्तिगत विवरण सुरक्षित हैं।",
     
     tabSources: "आधिकारिक स्रोत",
-    officialVerifiedBadge: "सत्यापित सरकारी पोर्टल",
-    unverifiedNotice: "गैर-सरकारी स्रोत—संबंधित कार्यालय में पुष्टि करें।",
-    visitOfficialPortal: "सरकारी वेबसाइट खोलें",
+    officialVerifiedBadge: "सत्यापित आधिकारिक पोर्टल",
+    unverifiedNotice: "सूचनात्मक परामर्श—संबंधित कार्यालय में जाकर अवश्य पुष्टि करें।",
+    visitOfficialPortal: "आधिकारिक पोर्टल खोलें",
     lastChecked: "सत्यापन तिथि",
     
-    tabAskQuestion: "इस दस्तावेज़ पर प्रश्न पूछें",
-    askPlaceholder: "इस कागज़ के बारे में हिंदी या अंग्रेज़ी में कुछ भी पूछें...",
+    tabAskQuestion: "दस्तावेज़ से जुड़े प्रश्न पूछें",
+    askPlaceholder: "इस कागज़ के संबंध में कोई भी प्रश्न हिंदी, बंगाली या अंग्रेज़ी में लिखें...",
     sendBtn: "पूछें",
-    voiceBtn: "बोलें",
-    listening: "सुन रहे हैं... कृपया हिंदी या अंग्रेज़ी में बोलें",
-    speakTranscript: "आपका बोला हुआ प्रश्न",
+    voiceBtn: "वॉइस",
+    listening: "सुन रहे हैं... अपना प्रश्न बोलें",
+    speakTranscript: "आपका प्रश्न",
     suggestedQuestions: "सुझाए गए प्रश्न:",
     
-    voiceTitle: "आवाज़ सहायक",
-    voiceSubtitle: "अपनी मातृभाषा में बोलें। एआई उत्तर तैयार करेगा और पढ़कर सुनाएगा।",
-    voiceStart: "बोलने के लिए दबाएं",
-    voiceStop: "बोलना समाप्त करें",
+    voiceTitle: "वॉइस सहायक",
+    voiceSubtitle: "अपनी आवाज़ में प्रश्न पूछें। एआई उत्तर तैयार कर बोलकर सुनाएगा।",
+    voiceStart: "बोलना शुरू करें",
+    voiceStop: "बोलना बंद करें",
     voicePlayAnswer: "उत्तर सुनें",
-    voiceStopAudio: "आवाज़ रोकें",
+    voiceStopAudio: "आवाज़ बंद करें",
     voicePermissionNote: "आपकी आवाज़ आपके ब्राउज़र में ही सुरक्षित रहती है।",
     
-    procedureGuideTitle: "सरकारी प्रक्रिया मार्गदर्शिका",
-    procedureGuideSubtitle: "विश्वसनीय सरकारी योजनाओं और आवेदन चरणों की जानकारी।",
-    searchProcedures: "प्रक्रिया खोजें (जैसे: बिजली बिल भुगतान, राशन आधार लिंक, आय प्रमाण-पत्र)...",
+    procedureGuideTitle: "सरकारी प्रक्रिया निर्देशिका",
+    procedureGuideSubtitle: "सरकारी योजनाओं और नागरिक सेवाओं की चरण-दर-चरण जानकारी",
+    searchProcedures: "प्रक्रिया खोजें (जैसे: बिजली बिल, राशन कार्ड, आय प्रमाण पत्र)...",
     
     historyTitle: "सहेजे गए दस्तावेज़",
-    historyEmpty: "कोई दस्तावेज़ सहेजा नहीं गया। आपके दस्तावेज़ केवल आपके ब्राउज़र में रहते हैं।",
+    historyEmpty: "कोई दस्तावेज़ सहेजा नहीं गया है।",
     clearHistory: "इतिहास साफ़ करें",
     deleteDoc: "दस्तावेज़ हटाएं",
     settingsTitle: "सुलभता एवं गोपनीयता सेटिंग्स",
     fontSize: "अक्षर का आकार",
     fontSizeNormal: "सामान्य",
     fontSizeLarge: "बड़ा (स्पष्ट)",
-    fontSizeExtraLarge: "बहुत बड़ा (अधिक सुलभ)",
+    fontSizeExtraLarge: "अति बड़ा (उच्च दृश्यता)",
     highContrast: "उच्च कंट्रास्ट मोड",
-    autoSpeak: "उत्तर स्वचालित रूप से पढ़कर सुनाएं",
-    deleteAllData: "सारा डेटा हटाएं और रीसेट करें",
+    autoSpeak: "उत्तर स्वतः बोलकर सुनाएं",
+    deleteAllData: "सारा डेटा मिटाएं व रीसेट करें",
     dataDeletedSuccess: "आपका सारा डेटा ब्राउज़र से स्थायी रूप से हटा दिया गया है।",
     
     loading: "कृपया प्रतीक्षा करें...",
@@ -464,5 +479,10 @@ export const translations: Record<Language, TranslationStrings> = {
     confidenceMedium: "मध्यम सटीकता",
     confidenceLow: "सावधानी अपेक्षित - स्वयं जांचें",
     uncertaintiesTitle: "जिन बिंदुओं पर स्पष्टीकरण आवश्यक है",
+
+    tabDraftGrievance: "पत्र एवं RTI आवेदन प्रारूप",
+    shareWhatsApp: "व्हाट्सएप पर साझा करें",
+    printSummary: "प्रिंट / पीडीएफ सुरक्षित करें",
+    addToCalendar: "कैलेंडर में जोड़ें (.ics)",
   }
 };

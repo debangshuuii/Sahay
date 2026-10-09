@@ -28,7 +28,7 @@ export async function POST(req: NextRequest) {
 
     if (apiKey) {
       try {
-        const prompt = `You are JibonSathi AI, a trustworthy personal administrative assistant.
+        const prompt = `You are Sahay (सहाय), a trustworthy citizen grievance and administrative assistant.
 Answer this citizen question strictly grounded in the document context.
 Language: ${language === 'bn' ? 'Bengali' : language === 'hi' ? 'Hindi' : 'English'}
 Document Type: ${documentType || 'Official Notice'}

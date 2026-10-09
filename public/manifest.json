@@ -1,0 +1,17 @@
+{
+  "name": "Sahay — AI Citizen Grievance Assistant",
+  "short_name": "Sahay",
+  "description": "Understand official government paperwork, notices, deadlines, and draft RTI replies in your language.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FAF8F5",
+  "theme_color": "#0F4C3A",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

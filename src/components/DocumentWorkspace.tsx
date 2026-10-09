@@ -30,8 +30,13 @@ import {
   ChevronDown,
   ChevronUp,
   Download,
-  Share2
+  Share2,
+  CalendarPlus,
+  FileSignature
 } from 'lucide-react';
+import { downloadDeadlineICS } from '@/lib/utils/calendarUtils';
+import { shareAnalysisViaWhatsApp, triggerPrintAnalysis } from '@/lib/utils/shareUtils';
+import { GrievanceDraftGenerator } from '@/components/GrievanceDraftGenerator';
 
 interface DocumentWorkspaceProps {
   analysis: DocumentAnalysis;
@@ -52,7 +57,7 @@ export const DocumentWorkspace: React.FC<DocumentWorkspaceProps> = ({
 }) => {
   const t = translations[language];
   const [analysis, setAnalysis] = useState<DocumentAnalysis>(initialAnalysis);
-  const [activeTab, setActiveTab] = useState<'explanation' | 'checklist' | 'dates' | 'docs' | 'facts' | 'sources' | 'chat'>('explanation');
+  const [activeTab, setActiveTab] = useState<'explanation' | 'checklist' | 'dates' | 'docs' | 'facts' | 'sources' | 'chat' | 'draft'>('explanation');
   
   // Sensitive masking toggle
   const [maskSensitive, setMaskSensitive] = useState<boolean>(true);
@@ -223,6 +228,28 @@ export const DocumentWorkspace: React.FC<DocumentWorkspaceProps> = ({
               <span>{isSaved ? (language === 'bn' ? 'সংরক্ষিত হয়েছে' : 'Saved') : (language === 'bn' ? 'সংরক্ষণ করুন' : 'Bookmark')}</span>
             </button>
 
+            {/* Share via WhatsApp */}
+            <button
+              onClick={() => shareAnalysisViaWhatsApp(analysis)}
+              className="btn btn-secondary"
+              style={{ fontSize: '0.875rem', color: '#16a34a' }}
+              title={t.shareWhatsApp}
+            >
+              <Share2 size={16} />
+              <span className="btn-label-desktop">{t.shareWhatsApp}</span>
+            </button>
+
+            {/* Print / Save PDF */}
+            <button
+              onClick={triggerPrintAnalysis}
+              className="btn btn-secondary"
+              style={{ fontSize: '0.875rem' }}
+              title={t.printSummary}
+            >
+              <Download size={16} />
+              <span className="btn-label-desktop">{t.printSummary}</span>
+            </button>
+
             {/* Language Switcher for Active Document */}
             <div style={{
               display: 'flex',
@@ -322,6 +349,7 @@ export const DocumentWorkspace: React.FC<DocumentWorkspaceProps> = ({
             { id: 'facts', label: t.tabKeyDetails, icon: Eye },
             { id: 'sources', label: t.tabSources, icon: ShieldCheck },
             { id: 'chat', label: t.tabAskQuestion, icon: MessageSquare },
+            { id: 'draft', label: t.tabDraftGrievance, icon: FileSignature },
           ].map(tab => {
             const IconComponent = tab.icon;
             const isActive = activeTab === tab.id;
@@ -589,8 +617,26 @@ export const DocumentWorkspace: React.FC<DocumentWorkspaceProps> = ({
                       borderRadius: 'var(--radius-sm)',
                       fontSize: '0.875rem',
                       color: 'var(--color-text-muted)',
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      flexWrap: 'wrap',
+                      gap: '0.5rem',
                     }}>
-                      <strong>{t.dateContext}:</strong> "{dl.original_text}"
+                      <div>
+                        <strong>{t.dateContext}:</strong> "{dl.original_text}"
+                      </div>
+                      {dl.date && (
+                        <button
+                          onClick={() => downloadDeadlineICS(dl, analysis.document_type.label, analysis.sources?.[0]?.publisher)}
+                          className="btn btn-secondary"
+                          style={{ fontSize: '0.8rem', padding: '0.3rem 0.65rem' }}
+                          title="Add deadline to calendar"
+                        >
+                          <CalendarPlus size={14} color="var(--color-primary)" />
+                          <span>{t.addToCalendar}</span>
+                        </button>
+                      )}
                     </div>
                   </div>
                 );
@@ -914,6 +960,14 @@ export const DocumentWorkspace: React.FC<DocumentWorkspaceProps> = ({
               </button>
             </form>
           </div>
+        )}
+
+        {/* Tab 8: Grievance Response & RTI Draft Generator */}
+        {activeTab === 'draft' && (
+          <GrievanceDraftGenerator
+            analysis={analysis}
+            language={language}
+          />
         )}
       </div>
 

@@ -2,20 +2,22 @@ import type { Metadata, Viewport } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'JibonSathi AI - Understand the paperwork. Know your next step.',
-  description: 'Multilingual personal life-administration assistant that helps ordinary people understand complicated official documents, government procedures, bills, notices, and applications in Bengali, Hindi, and English.',
+  title: 'Sahay (सहाय) — AI Citizen Grievance & Document Assistant',
+  description: 'Understand complicated official paperwork, notices, court orders, bills, and government procedures in Bengali, Hindi, and English without confusion or intermediaries.',
   keywords: [
-    'JibonSathi AI',
     'Sahay',
+    'AI citizen assistant',
     'government document assistant',
+    'RTI application generator',
     'Bengali document AI',
     'Hindi document AI',
     'WBSEDCL bill notice',
     'Ration card e-KYC',
-    'Income certificate procedure',
+    'CPGRAMS grievance',
     'citizen paperwork helper'
   ],
-  authors: [{ name: 'JibonSathi AI Team' }],
+  manifest: '/manifest.json',
+  authors: [{ name: 'Sahay Team' }],
 };
 
 export const viewport: Viewport = {
@@ -35,6 +37,7 @@ export default function RootLayout({
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="icon" href="/icon.svg" type="image/svg+xml" />
       </head>
       <body>{children}</body>
     </html>

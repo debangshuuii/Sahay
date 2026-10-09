@@ -261,3 +261,35 @@ button, input, select, textarea {
     grid-template-columns: repeat(3, 1fr);
   }
 }
+
+/* Print Styles for Official Citizen Briefings */
+@media print {
+  header, nav, [role="tablist"], button, form, .btn, .voice-assistant-fab {
+    display: none !important;
+  }
+
+  body {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+    font-size: 12pt !important;
+  }
+
+  .card {
+    border: 1px solid #cccccc !important;
+    box-shadow: none !important;
+    break-inside: avoid;
+    margin-bottom: 1rem !important;
+    background-color: #ffffff !important;
+  }
+
+  h1, h2, h3 {
+    color: #000000 !important;
+  }
+
+  .badge {
+    border: 1px solid #333333 !important;
+    color: #000000 !important;
+    background: transparent !important;
+  }
+}
+

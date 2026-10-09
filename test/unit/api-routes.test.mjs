@@ -15,7 +15,7 @@ function mockRequest(url, options = {}) {
   };
 }
 
-describe('JibonSathi AI API Endpoint Integration Tests', () => {
+describe('Sahay API Endpoint Integration Tests', () => {
 
   test('API 1: /api/analyze handles JSON input with Bengali preference', async () => {
     const req = mockRequest('http://localhost:3000/api/analyze', {

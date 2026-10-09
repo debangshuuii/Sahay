@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { analyzeDocumentWithGroundedEngine } from '@/lib/ai/provider';
+import { analyzeDocumentWithGeminiVision } from '@/lib/ai/visionAnalyzer';
 import { SupportedLanguage } from '@/lib/ai/types';
 
 export const runtime = 'nodejs';
@@ -11,6 +12,7 @@ export async function POST(req: NextRequest) {
     let fileSize = 150000;
     let mimeType = 'application/pdf';
     let textContent = '';
+    let fileBase64: string | undefined = undefined;
     let language: SupportedLanguage = 'en';
 
     if (contentType.includes('multipart/form-data')) {
@@ -30,7 +32,7 @@ export async function POST(req: NextRequest) {
       if (file) {
         fileName = file.name;
         fileSize = file.size;
-        mimeType = file.type;
+        mimeType = file.type || 'application/pdf';
 
         // File validation
         const maxSizeBytes = 15 * 1024 * 1024; // 15MB
@@ -49,17 +51,15 @@ export async function POST(req: NextRequest) {
           );
         }
 
-        // If it's a text-heavy file or text was not provided, read buffer
+        const buffer = Buffer.from(await file.arrayBuffer());
+        fileBase64 = buffer.toString('base64');
+
         if (!textContent) {
-          const buffer = Buffer.from(await file.arrayBuffer());
-          // Native text extraction attempt if ASCII/UTF8 strings exist in PDF/file
+          // Attempt basic UTF8 printable text extraction from raw stream if available
           const raw = buffer.toString('utf8');
-          // Filter printable strings for basic OCR/text extraction
           const printable = raw.replace(/[^\x20-\x7E\u0980-\u09FF\u0900-\u097F\n\r]/g, ' ');
           if (printable.trim().length > 30) {
             textContent = printable.slice(0, 5000);
-          } else {
-            textContent = `Document: ${fileName}. Official administrative notice.`;
           }
         }
       }
@@ -70,13 +70,36 @@ export async function POST(req: NextRequest) {
       mimeType = body.mimeType || mimeType;
       textContent = body.text || '';
       language = body.language || 'en';
+      fileBase64 = body.fileBase64;
     }
 
+    // Attempt Gemini Multimodal Vision first if API key is present
+    if (fileBase64 || textContent) {
+      const visionResult = await analyzeDocumentWithGeminiVision({
+        fileBase64,
+        mimeType,
+        fileName,
+        fileSize,
+        language,
+        textContent,
+      });
+
+      if (visionResult) {
+        return NextResponse.json({
+          success: true,
+          analysis: visionResult.analysis,
+          providerUsed: 'gemini_multimodal_vision',
+          notice: visionResult.notice,
+        });
+      }
+    }
+
+    // Grounded fallback rules engine
     const { analysis, providerUsed, notice } = await analyzeDocumentWithGroundedEngine({
       fileName,
       fileSize,
       mimeType,
-      text: textContent,
+      text: textContent || `Document: ${fileName}. Official administrative notice.`,
       language,
     });
 

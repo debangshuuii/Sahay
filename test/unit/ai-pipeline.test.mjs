@@ -6,7 +6,7 @@ import { calculateDaysRemaining, toVernacularDigits } from '../../src/lib/utils/
 import { sanitizeDocumentInput, analyzeDocumentWithGroundedEngine, SAMPLE_DOCUMENTS } from '../../src/lib/ai/provider.ts';
 import { DocumentAnalysisSchema } from '../../src/lib/ai/types.ts';
 
-describe('JibonSathi AI Core Validation and Grounding Tests', () => {
+describe('Sahay Core Validation and Grounding Tests', () => {
 
   test('1. Official Source URL Verification & Filtering', () => {
     // Valid government domains
