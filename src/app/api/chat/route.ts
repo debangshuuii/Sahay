@@ -1,12 +1,28 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { sanitizeDocumentInput } from '@/lib/ai/provider';
+import { filterSafeOfficialSources } from '@/lib/ai/sources';
+import { checkRateLimit, getClientIp } from '@/lib/security/rateLimit';
 import { SupportedLanguage } from '@/lib/ai/types';
 
 export const runtime = 'nodejs';
 
 export async function POST(req: NextRequest) {
   try {
-    const { question, contextSummary, documentType, language = 'en', keyFacts = [] } = await req.json();
+    const ip = getClientIp(req);
+    const rl = checkRateLimit(`chat:${ip}`, { limit: 30, windowMs: 60_000 });
+    if (!rl.allowed) {
+      return NextResponse.json({ error: 'Too many questions. Please wait and retry.' }, { status: 429 });
+    }
+
+    const {
+      question,
+      contextSummary,
+      documentType,
+      language = 'en',
+      keyFacts = [],
+      sources = [],
+      deadlines = [],
+    } = await req.json();
 
     if (!question || typeof question !== 'string') {
       return NextResponse.json({ error: 'Question is required' }, { status: 400 });
@@ -15,14 +31,19 @@ export async function POST(req: NextRequest) {
     const { cleanText, isSuspect } = sanitizeDocumentInput(question);
     if (isSuspect) {
       return NextResponse.json({
-        answer: language === 'bn' 
+        answer: language === 'bn'
           ? 'নিরাপত্তাজনিত কারণে এই প্রশ্নের উত্তর দেওয়া সম্ভব নয়। অনুগ্রহ করে নথির বিষয়বস্তু সম্পর্কিত সরাসরি প্রশ্ন করুন।'
           : language === 'hi'
           ? 'सुरक्षा कारणों से इस प्रश्न का उत्तर नहीं दिया जा सकता। कृपया दस्तावेज़ से संबंधित सीधा प्रश्न पूछें।'
           : 'For safety and privacy compliance, instructions that attempt to override system rules cannot be processed. Please ask questions grounded directly in the document.',
         groundedQuotes: [],
+        sources: [],
       });
     }
+
+    // Allowlisted citations for grounded answers
+    const safeSources = filterSafeOfficialSources(Array.isArray(sources) ? sources : []);
+    const citations = safeSources.slice(0, 3).map((s) => ({ title: s.title, url: s.url, publisher: s.publisher }));
 
     const apiKey = process.env.GEMINI_API_KEY || process.env.GOOGLE_GENAI_API_KEY;
 
@@ -34,13 +55,15 @@ Language: ${language === 'bn' ? 'Bengali' : language === 'hi' ? 'Hindi' : 'Engli
 Document Type: ${documentType || 'Official Notice'}
 Summary: ${contextSummary || ''}
 Key Facts: ${JSON.stringify(keyFacts)}
+Deadlines: ${JSON.stringify(deadlines)}
 
 User Question: ${cleanText}
 
 Rules:
 - Give a direct, compassionate, step-by-step answer.
 - If the document does not contain the answer, say so explicitly. Never fabricate.
-- If it's a dispute or missed deadline, advise visiting the issuing office with receipt.`;
+- If it's a dispute or missed deadline, advise visiting the issuing office with receipt.
+- End with 1 line: "Verify at: <official portal>" if a portal is known.`;
 
         const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
           method: 'POST',
@@ -52,7 +75,11 @@ Rules:
           const data = await res.json();
           const ans = data?.candidates?.[0]?.content?.parts?.[0]?.text;
           if (ans) {
-            return NextResponse.json({ answer: ans.trim(), groundedQuotes: [] });
+            return NextResponse.json({
+              answer: ans.trim(),
+              groundedQuotes: (keyFacts || []).slice(0, 2).map((f: { label: string; value: string }) => `${f.label}: ${f.value}`),
+              sources: citations,
+            });
           }
         }
       } catch (e) {
@@ -101,7 +128,8 @@ Rules:
 
     return NextResponse.json({
       answer,
-      groundedQuotes: ['Verified from official administrative instructions.'],
+      groundedQuotes: (keyFacts || []).slice(0, 2).map((f: { label: string; value: string }) => `${f.label}: ${f.value}`),
+      sources: citations,
     });
   } catch (error) {
     console.error('Chat error:', error);
