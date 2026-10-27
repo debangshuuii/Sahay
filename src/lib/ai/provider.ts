@@ -1,5 +1,8 @@
 import { DocumentAnalysis, DocumentAnalysisSchema, SupportedLanguage, SourceCitation, Deadline } from './types';
 import { VERIFIED_OFFICIAL_PROCEDURES, filterSafeOfficialSources } from './sources';
+import { EXTRA_SAMPLE_DOCUMENTS } from './extraPresets';
+import { detectOcrQuality } from '@/lib/ocr/extractText';
+import { analyzeFraudSignals } from '@/lib/security/fraudDetector';
 
 export interface AIProviderConfig {
   apiKey?: string;
@@ -708,7 +711,11 @@ For queries, contact toll-free 1967 / 1800-345-5505.`,
       },
     },
   },
+  ...EXTRA_SAMPLE_DOCUMENTS,
 ];
+
+// All samples (base + extended) — single source for UI dropzones
+export const ALL_SAMPLE_DOCUMENTS: SampleDocumentPreset[] = SAMPLE_DOCUMENTS;
 
 // Core AI Analyzer Orchestrator
 export async function analyzeDocumentWithGroundedEngine(
@@ -800,14 +807,24 @@ ${sanitized.cleanText.slice(0, 8000)}`;
   const sanitized = sanitizeDocumentInput(rawText);
   const clean = sanitized.cleanText;
 
-  // Detect likely document category
+  // Detect likely document category (8 procedures)
+  const findProc = (id: string) =>
+    VERIFIED_OFFICIAL_PROCEDURES.find((p) => p.id === id) || VERIFIED_OFFICIAL_PROCEDURES[0];
   let matchedProcedure = VERIFIED_OFFICIAL_PROCEDURES[0];
-  if (/ration|food|epds|khadya|রেশন|রাশন/i.test(clean)) {
-    matchedProcedure = VERIFIED_OFFICIAL_PROCEDURES[1];
+  if (/ration|food|epds|khadya|রেশন|রাশन|swasthya|ayushman|hospital/i.test(clean)) {
+    matchedProcedure = /swasthya|ayushman|hospital/i.test(clean)
+      ? findProc('swasthya-sathi-ayushman-card')
+      : findProc('ration-aadhaar-link-wb');
+  } else if (/court|summons|ecourts|cnr|ex-parte|আদালত|पंचायत/i.test(clean)) {
+    matchedProcedure = findProc('court-summons-response-wb');
+  } else if (/scholarship|oasis|aikyashree|marks|bonafide|বৃত্তি|छात्रवृत्ति/i.test(clean)) {
+    matchedProcedure = findProc('oasis-aikyashree-scholarship-wb');
+  } else if (/property|holding|municipal|trade license|পুরসভা|संपत्ति/i.test(clean)) {
+    matchedProcedure = findProc('municipal-property-tax-wb');
   } else if (/income|certificate|edistrict|bdo|sdo|আয়|ইনকাম/i.test(clean)) {
-    matchedProcedure = VERIFIED_OFFICIAL_PROCEDURES[2];
+    matchedProcedure = findProc('wb-income-certificate-edistrict');
   } else if (/bank|kyc|account|freeze|pan|ovd|শাখা|অ্যাকাউন্ট/i.test(clean)) {
-    matchedProcedure = VERIFIED_OFFICIAL_PROCEDURES[3];
+    matchedProcedure = findProc('bank-kyc-account-freeze-prevention');
   }
 
   // Detect dates
@@ -887,6 +904,9 @@ ${sanitized.cleanText.slice(0, 8000)}`;
     }
   ];
 
+  const ocrQuality = detectOcrQuality(clean);
+  const fraud = analyzeFraudSignals(clean, { officialUrls: [matchedProcedure.officialUrl] });
+
   const analysis: DocumentAnalysis = {
     fileName: input.fileName,
     fileSize: input.fileSize,
@@ -919,7 +939,25 @@ ${sanitized.cleanText.slice(0, 8000)}`;
         ? 'যদি নথির কিছু অংশ অস্পষ্ট থাকে, তবে কোনো চূড়ান্ত সিদ্ধান্ত নেওয়ার আগে সংশ্লিষ্ট সরকারি অফিসে মূল কপি দেখিয়ে নিন।' 
         : isHi 
         ? 'यदि दस्तावेज़ का कोई हिस्सा धुंधला हो, तो किसी भी अंतिम निर्णय से पहले संबंधित कार्यालय में मूल प्रति दिखाएं।'
-        : 'If any portion of the scan or photograph is faded, verify the original hardcopy with the issuing office before taking irreversible legal steps.'
+        : 'If any portion of the scan or photograph is faded, verify the original hardcopy with the issuing office before taking irreversible legal steps.',
+      ...(fraud.risk !== 'safe'
+        ? [
+            isBn
+              ? `সতর্কতা: এই নথিতে ${fraud.score}/100 ঝুঁকির সংকেত পাওয়া গেছে (${fraud.signals.length}টি)। টাকা দেওয়ার আগে অফিসে যাচাই করুন।`
+              : isHi
+              ? `चेतावनी: इस दस्तावेज़ में ${fraud.score}/100 जोखिम संकेत मिले हैं। भुगतान से पहले कार्यालय में सत्यापित करें।`
+              : `Fraud screen: risk ${fraud.score}/100 with ${fraud.signals.length} flag(s). Verify at the office before paying.`,
+          ]
+        : []),
+      ...(ocrQuality === 'low' || ocrQuality === 'unreadable'
+        ? [
+            isBn
+              ? 'স্ক্যান অস্পষ্ট — ভালো আলোতে ক্রপ করে আবার ছবি তুলুন।'
+              : isHi
+              ? 'स्कैन अस्पष्ट है — अच्छी रोशनी में क्रॉप कर दोबारा फोटो लें।'
+              : 'Scan quality is low — retake the photo in good light with tight cropping.',
+          ]
+        : []),
     ],
     follow_up_questions: isBn ? [
       'এই কাজের জন্য সরকারি ফি কত?',
@@ -936,7 +974,7 @@ ${sanitized.cleanText.slice(0, 8000)}`;
     ],
     raw_extracted_text: clean.slice(0, 1000),
     unreadable_sections: sanitized.isSuspect ? ['Potential instruction injection detected and sanitized'] : [],
-    ocr_quality: clean.length > 50 ? 'high' : 'medium',
+    ocr_quality: ocrQuality,
   };
 
   return {
