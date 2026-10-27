@@ -3,6 +3,8 @@
 import React, { useState, useMemo } from 'react';
 import { DocumentAnalysis } from '@/lib/ai/types';
 import { Language, translations } from '@/lib/i18n/translations';
+import { auditLog } from '@/lib/storage/auditLog';
+import { cpgramsPortalUrl } from '@/lib/utils/reportGenerator';
 import { 
   FileText, 
   Copy, 
@@ -207,6 +209,7 @@ Action Requested:
     try {
       await navigator.clipboard.writeText(generatedDraft);
       setCopied(true);
+      auditLog.append('grievance_draft', `Copied ${draftType} draft`, analysis.id);
       setTimeout(() => setCopied(false), 2500);
     } catch {
       alert('Unable to copy directly. Please select and copy manually.');
@@ -224,9 +227,11 @@ Action Requested:
     link.click();
     document.body.removeChild(link);
     URL.revokeObjectURL(url);
+    auditLog.append('grievance_draft', `Downloaded ${draftType} draft TXT`, analysis.id);
   };
 
   const handlePrint = () => {
+    auditLog.append('grievance_draft', `Printed ${draftType} draft`, analysis.id);
     const printWindow = window.open('', '_blank');
     if (!printWindow) return;
     printWindow.document.write(`
@@ -250,8 +255,14 @@ Action Requested:
   };
 
   const handleWhatsAppShare = () => {
+    auditLog.append('share', `Shared ${draftType} draft via WhatsApp`, analysis.id);
     const url = `https://api.whatsapp.com/send?text=${encodeURIComponent(generatedDraft)}`;
     window.open(url, '_blank', 'noopener,noreferrer');
+  };
+
+  const handleOpenCpgrams = () => {
+    auditLog.append('grievance_draft', 'Opened CPGRAMS portal from draft', analysis.id);
+    window.open(cpgramsPortalUrl(analysis), '_blank', 'noopener,noreferrer');
   };
 
   return (
@@ -475,7 +486,7 @@ Action Requested:
               <span>{language === 'bn' ? 'প্রস্তুতকৃত চিঠির খসড়া' : language === 'hi' ? 'तैयार पत्र का प्रारूप' : 'Formatted Output Preview'}</span>
             </h3>
 
-            <div style={{ display: 'flex', gap: '0.35rem' }}>
+            <div style={{ display: 'flex', gap: '0.35rem', flexWrap: 'wrap' }}>
               <button
                 onClick={handleCopy}
                 className="btn btn-secondary"
@@ -514,6 +525,16 @@ Action Requested:
               >
                 <Share2 size={14} />
                 <span>WhatsApp</span>
+              </button>
+
+              <button
+                onClick={handleOpenCpgrams}
+                className="btn btn-primary"
+                style={{ fontSize: '0.8rem', padding: '0.35rem 0.65rem' }}
+                title="Open CPGRAMS to lodge this grievance"
+              >
+                <Send size={14} />
+                <span>CPGRAMS Lodge</span>
               </button>
             </div>
           </div>
