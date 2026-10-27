@@ -30,6 +30,20 @@
 - **📝 Grievance & Response Generator**:
   - Formulate structured RTI applications, appeal letters, and grievance submissions.
   - Pre-filled templates tailored to specific document types.
+  - One-click CPGRAMS lodge (`pgportal.gov.in`), DigiLocker link, audit-logged copies.
+
+- **🛡️ Fraud & Authenticity Screen**:
+  - Flags personal UPI handles, OTP/PIN phishing, bit.ly links, non-`.gov.in` payment URLs.
+  - Risk score 0-100 with `cybercrime.gov.in` escalation.
+
+- **📊 Progress, Reminders & Reports**:
+  - Checklist progress persists across reloads (`localStorageManager.saveProgress`).
+  - Upcoming-deadlines dashboard, browser notifications, ICS + Google Calendar links.
+  - Full citizen PDF report + Markdown brief export.
+
+- **🔍 Search, PWA & Cloud-ready**:
+  - Search across saved docs, PWA offline (`/sw.js` + `/offline.html`), local-first with Supabase sync stub.
+  - Rate-limited APIs (`/api/analyze`, `/api/chat`, `/api/feedback`, `/api/documents`), chat citations + thumbs feedback, 8 procedures + 6 sample demos.
 
 ---
 
