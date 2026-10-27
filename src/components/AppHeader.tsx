@@ -54,7 +54,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
             textAlign: 'left',
             padding: '0.25rem',
           }}
-          aria-label="JibonSathi AI Home"
+          aria-label="Sahay Home"
         >
           <div style={{
             width: '42px',
