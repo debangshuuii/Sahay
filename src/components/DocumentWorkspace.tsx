@@ -5,26 +5,26 @@ import { DocumentAnalysis, SupportedLanguage, KeyFact, ActionStep, Deadline, Req
 import { Language, translations } from '@/lib/i18n/translations';
 import { maskSensitiveValue } from '@/lib/utils/masking';
 import { calculateDaysRemaining, toVernacularDigits } from '@/lib/utils/dateUtils';
-import { 
-  FileText, 
-  CheckSquare, 
-  Square, 
-  Calendar, 
-  Clock, 
-  ShieldCheck, 
-  ExternalLink, 
-  Eye, 
-  EyeOff, 
-  MessageSquare, 
-  Volume2, 
-  VolumeX, 
-  Bookmark, 
-  BookmarkCheck, 
-  AlertTriangle, 
-  HelpCircle, 
-  Send, 
-  Mic, 
-  CheckCircle2, 
+import {
+  FileText,
+  CheckSquare,
+  Square,
+  Calendar,
+  Clock,
+  ShieldCheck,
+  ExternalLink,
+  Eye,
+  EyeOff,
+  MessageSquare,
+  Volume2,
+  VolumeX,
+  Bookmark,
+  BookmarkCheck,
+  AlertTriangle,
+  HelpCircle,
+  Send,
+  Mic,
+  CheckCircle2,
   Sparkles,
   ArrowLeft,
   ChevronDown,
@@ -32,10 +32,19 @@ import {
   Download,
   Share2,
   CalendarPlus,
-  FileSignature
+  FileSignature,
+  Bell,
+  ThumbsUp,
+  ThumbsDown,
+  FileDown
 } from 'lucide-react';
 import { downloadDeadlineICS } from '@/lib/utils/calendarUtils';
 import { shareAnalysisViaWhatsApp, triggerPrintAnalysis } from '@/lib/utils/shareUtils';
+import { googleCalendarTemplateUrl, downloadCitizenReport, downloadMarkdownBrief, cpgramsPortalUrl, digiLockerUrl } from '@/lib/utils/reportGenerator';
+import { checkAndNotifyUpcoming, requestNotificationPermission, getReminderPrefs, saveReminderPrefs } from '@/lib/utils/reminders';
+import { localStorageManager } from '@/lib/storage/localStorageManager';
+import { auditLog, feedbackStore } from '@/lib/storage/auditLog';
+import { FraudAlert } from '@/components/FraudAlert';
 import { GrievanceDraftGenerator } from '@/components/GrievanceDraftGenerator';
 
 interface DocumentWorkspaceProps {
@@ -75,7 +84,7 @@ export const DocumentWorkspace: React.FC<DocumentWorkspaceProps> = ({
   const [isSpeaking, setIsSpeaking] = useState<boolean>(false);
   
   // Contextual Chat state
-  const [chatMessages, setChatMessages] = useState<Array<{ sender: 'user' | 'assistant'; text: string }>>([
+  const [chatMessages, setChatMessages] = useState<Array<{ sender: 'user' | 'assistant'; text: string; sources?: Array<{ title: string; url: string; publisher: string }>; groundedQuotes?: string[] }>>([
     {
       sender: 'assistant',
       text: language === 'bn'
@@ -87,21 +96,70 @@ export const DocumentWorkspace: React.FC<DocumentWorkspaceProps> = ({
   ]);
   const [chatInput, setChatInput] = useState<string>('');
   const [isChatLoading, setIsChatLoading] = useState<boolean>(false);
+  const [remindersOn, setRemindersOn] = useState<boolean>(() => getReminderPrefs().enabled);
 
   useEffect(() => {
     setAnalysis(initialAnalysis);
-    setActionSteps(initialAnalysis.action_steps);
-    setRequiredDocs(initialAnalysis.required_documents);
+    // Restore persisted checklist progress (survives reload)
+    const saved = initialAnalysis.id ? localStorageManager.getProgress(initialAnalysis.id) : null;
+    if (saved) {
+      setActionSteps(initialAnalysis.action_steps.map(s => ({ ...s, completed: saved.completedSteps.includes(s.id) })));
+      setRequiredDocs(initialAnalysis.required_documents.map(d => ({ ...d, collected: saved.collectedDocs.includes(d.id) })));
+    } else {
+      setActionSteps(initialAnalysis.action_steps);
+      setRequiredDocs(initialAnalysis.required_documents);
+    }
+    // Deadline reminder check (browser notification if enabled)
+    if (getReminderPrefs().enabled) {
+      checkAndNotifyUpcoming(initialAnalysis.deadlines, initialAnalysis.document_type.label);
+    }
   }, [initialAnalysis]);
 
-  // Handle Action step completion toggle
+  // Handle Action step completion toggle (persisted)
   const toggleStepCompleted = (id: string) => {
-    setActionSteps(prev => prev.map(s => s.id === id ? { ...s, completed: !s.completed } : s));
+    setActionSteps(prev => {
+      const next = prev.map(s => s.id === id ? { ...s, completed: !s.completed } : s);
+      if (analysis.id) {
+        localStorageManager.saveProgress(
+          analysis.id,
+          next.filter(s => s.completed).map(s => s.id),
+          requiredDocs.filter(d => d.collected).map(d => d.id)
+        );
+      }
+      return next;
+    });
   };
 
-  // Handle Required Document collected toggle
+  // Handle Required Document collected toggle (persisted)
   const toggleDocCollected = (id: string) => {
-    setRequiredDocs(prev => prev.map(d => d.id === id ? { ...d, collected: !d.collected } : d));
+    setRequiredDocs(prev => {
+      const next = prev.map(d => d.id === id ? { ...d, collected: !d.collected } : d);
+      if (analysis.id) {
+        localStorageManager.saveProgress(
+          analysis.id,
+          actionSteps.filter(s => s.completed).map(s => s.id),
+          next.filter(d => d.collected).map(d => d.id)
+        );
+      }
+      return next;
+    });
+  };
+
+  const handleToggleReminders = async () => {
+    if (!remindersOn) {
+      const perm = await requestNotificationPermission();
+      if (perm !== 'granted') {
+        alert(language === 'bn' ? 'ব্রাউজারে নোটিফিকেশন অনুমতি দিন।' : 'Please allow browser notifications to enable reminders.');
+        return;
+      }
+      saveReminderPrefs({ enabled: true });
+      setRemindersOn(true);
+      const n = checkAndNotifyUpcoming(analysis.deadlines, analysis.document_type.label);
+      auditLog.append('calendar_export', `Reminders enabled (${n} immediate)`, analysis.id);
+    } else {
+      saveReminderPrefs({ enabled: false });
+      setRemindersOn(false);
+    }
   };
 
   // Audio Read Aloud functionality using SpeechSynthesis
@@ -141,7 +199,7 @@ export const DocumentWorkspace: React.FC<DocumentWorkspaceProps> = ({
     setIsSpeaking(true);
   };
 
-  // Handle Chat Question submission
+  // Handle Chat Question submission (with citations + feedback loop)
   const handleSendChat = async (questionText?: string) => {
     const q = (questionText || chatInput).trim();
     if (!q || isChatLoading) return;
@@ -160,12 +218,15 @@ export const DocumentWorkspace: React.FC<DocumentWorkspaceProps> = ({
           documentType: analysis.document_type.label,
           language,
           keyFacts: analysis.key_facts,
+          sources: analysis.sources,
+          deadlines: analysis.deadlines,
         }),
       });
 
       if (res.ok) {
         const data = await res.json();
-        setChatMessages(prev => [...prev, { sender: 'assistant', text: data.answer }]);
+        setChatMessages(prev => [...prev, { sender: 'assistant', text: data.answer, sources: data.sources, groundedQuotes: data.groundedQuotes }]);
+        auditLog.append('chat', q.slice(0, 120), analysis.id);
       } else {
         setChatMessages(prev => [...prev, { 
           sender: 'assistant', 
@@ -180,6 +241,19 @@ export const DocumentWorkspace: React.FC<DocumentWorkspaceProps> = ({
     } finally {
       setIsChatLoading(false);
     }
+  };
+
+  const handleChatFeedback = (idx: number, rating: 'up' | 'down') => {
+    const msg = chatMessages[idx];
+    if (!msg || msg.sender !== 'assistant') return;
+    const prevUser = [...chatMessages.slice(0, idx)].reverse().find(m => m.sender === 'user');
+    feedbackStore.append({
+      docId: analysis.id,
+      question: prevUser?.text || '',
+      answer: msg.text,
+      rating,
+    });
+    alert(language === 'bn' ? 'মতামতের জন্য ধন্যবাদ!' : language === 'hi' ? 'प्रतिक्रिया हेतु धन्यवाद!' : 'Thanks for your feedback!');
   };
 
   const completedStepsCount = actionSteps.filter(s => s.completed).length;
@@ -318,6 +392,39 @@ export const DocumentWorkspace: React.FC<DocumentWorkspaceProps> = ({
               <span>{maskSensitive ? t.unmaskSensitive : t.maskSensitive}</span>
             </button>
           </div>
+        </div>
+
+        {/* Fraud / authenticity screen */}
+        <div style={{ marginBottom: '1.25rem' }}>
+          <FraudAlert
+            rawText={analysis.raw_extracted_text || `${analysis.summary} ${analysis.why_received || ''}`}
+            language={language}
+            officialUrls={analysis.sources?.map(s => s.url)}
+          />
+        </div>
+
+        {/* Quick actions: reminders + full report + portals */}
+        <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginBottom: '1.25rem' }}>
+          <button onClick={handleToggleReminders} className={`btn ${remindersOn ? 'btn-amber' : 'btn-secondary'}`} style={{ fontSize: '0.82rem' }}>
+            <Bell size={15} />
+            <span>{remindersOn ? (language === 'bn' ? 'রিমাইন্ডার চালু' : 'Reminders ON') : (language === 'bn' ? 'ডেডলাইন রিমাইন্ডার' : 'Enable Reminders')}</span>
+          </button>
+          <button onClick={() => { downloadCitizenReport(analysis); auditLog.append('share', 'Citizen PDF report', analysis.id); }} className="btn btn-secondary" style={{ fontSize: '0.82rem' }}>
+            <FileDown size={15} />
+            <span>{language === 'bn' ? 'সম্পূর্ণ রিপোর্ট (PDF)' : 'Full Report (PDF)'}</span>
+          </button>
+          <button onClick={() => downloadMarkdownBrief(analysis)} className="btn btn-secondary" style={{ fontSize: '0.82rem' }}>
+            <Download size={15} />
+            <span>Markdown Brief</span>
+          </button>
+          <a href={cpgramsPortalUrl(analysis)} target="_blank" rel="noreferrer" className="btn btn-secondary" style={{ fontSize: '0.82rem', textDecoration: 'none' }}>
+            <ExternalLink size={15} />
+            <span>CPGRAMS Lodge</span>
+          </a>
+          <a href={digiLockerUrl()} target="_blank" rel="noreferrer" className="btn btn-secondary" style={{ fontSize: '0.82rem', textDecoration: 'none' }}>
+            <ExternalLink size={15} />
+            <span>DigiLocker</span>
+          </a>
         </div>
 
         {/* 7 Section Navigation Tabs */}
@@ -627,15 +734,29 @@ export const DocumentWorkspace: React.FC<DocumentWorkspaceProps> = ({
                         <strong>{t.dateContext}:</strong> "{dl.original_text}"
                       </div>
                       {dl.date && (
-                        <button
-                          onClick={() => downloadDeadlineICS(dl, analysis.document_type.label, analysis.sources?.[0]?.publisher)}
-                          className="btn btn-secondary"
-                          style={{ fontSize: '0.8rem', padding: '0.3rem 0.65rem' }}
-                          title="Add deadline to calendar"
-                        >
-                          <CalendarPlus size={14} color="var(--color-primary)" />
-                          <span>{t.addToCalendar}</span>
-                        </button>
+                        <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap' }}>
+                          <button
+                            onClick={() => { downloadDeadlineICS(dl, analysis.document_type.label, analysis.sources?.[0]?.publisher); auditLog.append('calendar_export', dl.description, analysis.id); }}
+                            className="btn btn-secondary"
+                            style={{ fontSize: '0.8rem', padding: '0.3rem 0.65rem' }}
+                            title="Add deadline to calendar"
+                          >
+                            <CalendarPlus size={14} color="var(--color-primary)" />
+                            <span>{t.addToCalendar}</span>
+                          </button>
+                          {googleCalendarTemplateUrl(dl, analysis.document_type.label) && (
+                            <a
+                              href={googleCalendarTemplateUrl(dl, analysis.document_type.label) as string}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="btn btn-secondary"
+                              style={{ fontSize: '0.8rem', padding: '0.3rem 0.65rem', textDecoration: 'none' }}
+                            >
+                              <span>Google Calendar</span>
+                              <ExternalLink size={13} />
+                            </a>
+                          )}
+                        </div>
                       )}
                     </div>
                   </div>
@@ -910,7 +1031,31 @@ export const DocumentWorkspace: React.FC<DocumentWorkspaceProps> = ({
                     lineHeight: 1.5,
                   }}
                 >
-                  {msg.text}
+                  <div style={{ whiteSpace: 'pre-wrap' }}>{msg.text}</div>
+                  {msg.sender === 'assistant' && (msg.groundedQuotes?.length || msg.sources?.length) ? (
+                    <div style={{ marginTop: '0.5rem', fontSize: '0.76rem', color: 'var(--color-text-muted)', borderTop: '1px solid var(--color-border)', paddingTop: '0.4rem' }}>
+                      {msg.groundedQuotes?.map((g, i) => (
+                        <div key={i} style={{ marginBottom: 2 }}>“{g}”</div>
+                      ))}
+                      {msg.sources?.map((s, i) => (
+                        <div key={i}>
+                          <a href={s.url} target="_blank" rel="noreferrer" style={{ color: 'var(--color-primary)' }}>
+                            [{s.publisher}] {s.title}
+                          </a>
+                        </div>
+                      ))}
+                    </div>
+                  ) : null}
+                  {msg.sender === 'assistant' && idx > 0 ? (
+                    <div style={{ marginTop: '0.4rem', display: 'flex', gap: '0.35rem' }}>
+                      <button onClick={() => handleChatFeedback(idx, 'up')} className="btn btn-secondary" style={{ padding: '0.2rem 0.5rem', fontSize: '0.72rem', minHeight: 28 }} title="Helpful">
+                        <ThumbsUp size={13} />
+                      </button>
+                      <button onClick={() => handleChatFeedback(idx, 'down')} className="btn btn-secondary" style={{ padding: '0.2rem 0.5rem', fontSize: '0.72rem', minHeight: 28 }} title="Not helpful">
+                        <ThumbsDown size={13} />
+                      </button>
+                    </div>
+                  ) : null}
                 </div>
               ))}
               {isChatLoading && (
