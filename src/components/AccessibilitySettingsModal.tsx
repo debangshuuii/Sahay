@@ -33,6 +33,15 @@ export const AccessibilitySettingsModal: React.FC<AccessibilitySettingsModalProp
         : 'Are you sure you want to permanently erase all saved documents, session history, and preferences?'
     )) {
       localStorageManager.clearAllData();
+      // Privacy: also purge audit log + feedback + reminders on full erase
+      try {
+        localStorage.removeItem('sahay_audit_log_v1');
+        localStorage.removeItem('sahay_chat_feedback_v1');
+        localStorage.removeItem('sahay_reminder_prefs_v1');
+        if ('serviceWorker' in navigator) {
+          caches?.keys?.().then((ks) => ks.forEach((k) => caches.delete(k))).catch(() => undefined);
+        }
+      } catch { /* ignore */ }
       onDataPurged();
       alert(t.dataDeletedSuccess);
       onClose();
