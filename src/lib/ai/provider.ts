@@ -750,7 +750,7 @@ export async function analyzeDocumentWithGroundedEngine(
   if (apiKey) {
     try {
       const sanitized = sanitizeDocumentInput(input.text || '');
-      const prompt = `You are JibonSathi AI, a multilingual administrative assistant.
+      const prompt = `You are Sahay (सहाय), a multilingual citizen administrative and grievance assistant.
 Explain the attached document for an ordinary citizen in ${lang === 'bn' ? 'Bengali (বাংলা)' : lang === 'hi' ? 'Hindi (हिन्दी)' : 'English'}.
 CRITICAL SAFETY & TRUTH RULES:
 1. Never invent missing deadlines, fees, or facts.
