@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { Language, translations } from '@/lib/i18n/translations';
-import { ShieldCheck, BookOpen, Bookmark, Settings, HelpCircle, FileText } from 'lucide-react';
+import { ShieldCheck, BookOpen, Bookmark, Settings, HelpCircle, FileText, Mic } from 'lucide-react';
 
 interface AppHeaderProps {
   language: Language;
@@ -10,6 +10,7 @@ interface AppHeaderProps {
   onOpenProcedures: () => void;
   onOpenHistory: () => void;
   onOpenSettings: () => void;
+  onOpenVoice?: () => void;
   onResetToHome: () => void;
   savedCount?: number;
 }
@@ -20,6 +21,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
   onOpenProcedures,
   onOpenHistory,
   onOpenSettings,
+  onOpenVoice,
   onResetToHome,
   savedCount = 0,
 }) => {
@@ -90,6 +92,26 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
 
         {/* Right Actions & Controls */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+          {/* Voice Assistant Trigger */}
+          {onOpenVoice && (
+            <button
+              onClick={onOpenVoice}
+              className="btn btn-secondary"
+              style={{
+                padding: '0.45rem 0.85rem',
+                fontSize: '0.875rem',
+                minHeight: '38px',
+                color: 'var(--color-primary)',
+              }}
+              title={t.voiceTitle}
+              aria-label={t.voiceTitle}
+            >
+              <Mic size={16} color="var(--color-primary)" />
+              <span style={{ display: 'none' }} className="btn-label-desktop">
+                {language === 'bn' ? 'কথা বলুন' : language === 'hi' ? 'बोलें' : 'Voice'}
+              </span>
+            </button>
+          )}
           {/* Procedure Guide Button */}
           <button
             onClick={onOpenProcedures}
