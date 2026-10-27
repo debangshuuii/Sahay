@@ -921,8 +921,8 @@ export const DocumentWorkspace: React.FC<DocumentWorkspaceProps> = ({
             }}>
               <strong>{language === 'bn' ? 'সরকারি নির্ভরযোগ্যতার নীতি:' : 'Government Verification Principle:'}</strong>{' '}
               {language === 'bn' 
-                ? 'জীবনসাথী এআই কোনো আনভেরিফায়েড ব্লগ বা সোশ্যাল মিডিয়ার তথ্য ব্যবহার করে না। নির্দেশিত প্রতিটি লিঙ্ক সরাসরি সরকারি বা নিয়ামক সংস্থার নিজস্ব পোর্টাল।' 
-                : 'JibonSathi AI avoids unofficial blogs and forums. All links are strictly audited against official government domains (.gov.in, .nic.in, or verified utilities).'}
+                ? 'সহায় (Sahay) কোনো আনভেরিফায়েড ব্লগ বা সোশ্যাল মিডিয়ার তথ্য ব্যবহার করে না। নির্দেশিত প্রতিটি লিঙ্ক সরাসরি সরকারি বা নিয়ামক সংস্থার নিজস্ব পোর্টাল (.gov.in, .nic.in)।' 
+                : 'Sahay avoids unofficial blogs and forums. All links are strictly audited against official government domains (.gov.in, .nic.in, or verified utilities).'}
             </div>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
