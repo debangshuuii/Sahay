@@ -19,6 +19,12 @@ export const TRUSTED_GOV_DOMAINS = [
   'passportindia.gov.in',
   'sbi.co.in',
   'rbi.org.in',
+  'wburbanservices.gov.in',
+  'oasis.gov.in',
+  'wbmdfcscholarship.in',
+  'pgportal.gov.in',
+  'digilocker.gov.in',
+  'ecourts.gov.in',
 ];
 
 export interface VerifiedOfficialProcedure {
@@ -253,6 +259,186 @@ export const VERIFIED_OFFICIAL_PROCEDURES: VerifiedOfficialProcedure[] = [
     warningsEn: 'Banks NEVER ask for your debit card PIN, CVV, or Netbanking password over phone calls, SMS links, or WhatsApp.',
     warningsBn: 'ব্যাঙ্ক কোনোদিন ফোনে পিন, ওটিপি বা পাসওয়ার্ড জানতে চায় না। কোনো লিঙ্কে ক্লিক করবেন না।',
     warningsHi: 'बैंक कभी भी फोन या व्हाट्सएप पर पिन, पासवर्ड या ओटीपी नहीं मांगते।'
+  },
+  {
+    id: 'court-summons-response-wb',
+    category: 'legal',
+    titleEn: 'Court / Panchayat Summons Response & Appearance',
+    titleBn: 'আদালত / পঞ্চায়েত সমন নোটিশের জবাব ও হাজিরা',
+    titleHi: 'न्यायालय / पंचायत समन नोटिस का उत्तर व उपस्थिति',
+    departmentEn: 'District & Sessions Court / Gram Panchayat, Govt. of West Bengal',
+    departmentBn: 'জেলা আদালত / গ্রাম পঞ্চায়েত, পশ্চিমবঙ্গ সরকার',
+    departmentHi: 'जिला न्यायालय / ग्राम पंचायत, पश्चिम बंगाल सरकार',
+    officialUrl: 'https://districts.ecourts.gov.in',
+    verificationDate: '2026-02-01',
+    summaryEn: 'Official steps to verify a summons on eCourts, prepare appearance, and avoid ex-parte orders.',
+    summaryBn: 'ই-কোর্টে সমন যাচাই, হাজিরার প্রস্তুতি এবং একতরফা আদেশ এড়ানোর সরকারি নিয়ম।',
+    summaryHi: 'ई-कोर्ट पर समन सत्यापित करने, उपस्थिति की तैयारी और एकतरफा आदेश से बचने की प्रक्रिया।',
+    mandatoryDocsEn: ['Summons copy with case number', 'Identity proof (Aadhaar/Voter ID)', 'Address proof', 'Prior vakalatnama if represented'],
+    mandatoryDocsBn: ['মামলা নম্বরসহ সমনের কপি', 'পরিচয়পত্র (আধার/ভোটার)', 'ঠিকানার প্রমাণ', 'উকিলনামা (যদি আইনজীবী থাকে)'],
+    mandatoryDocsHi: ['केस नंबर सहित समन की प्रति', 'पहचान पत्र (आधार/वोटर)', 'पते का प्रमाण', 'वकालतनामा (यदि वकील हो)'],
+    stepsEn: [
+      'Note case number, court name, and date of appearance from the summons.',
+      'Verify the case on districts.ecourts.gov.in via CNR / case number search.',
+      'Consult a legal-aid / panel lawyer; do not ignore the date even if dispute seems minor.',
+      'Appear on time with originals + 2 photocopy sets; collect stamped acknowledgement.',
+      'If unable to appear, file adjournment / exemption application through counsel before the date.'
+    ],
+    stepsBn: [
+      'সমন থেকে মামলা নম্বর, আদালতের নাম ও হাজিরার তারিখ লিখে রাখুন।',
+      'districts.ecourts.gov.in-এ CNR / মামলা নম্বর দিয়ে যাচাই করুন।',
+      'আইনি সহায়তা / আইনজীবীর পরামর্শ নিন; তারিখ উপেক্ষা করবেন না।',
+      'সময়মতো মূল কাগজ + ২ সেট জেরক্স নিয়ে হাজির হন; সিলমোহরযুক্ত প্রাপ্তি নিন।',
+      'হাজির হতে না পারলে তারিখের আগেই আইনজীবীর মাধ্যমে স্থগিতাদেশের আবেদন করুন।'
+    ],
+    stepsHi: [
+      'समन से केस नंबर, न्यायालय का नाम व पेशी की तारीख नोट करें।',
+      'districts.ecourts.gov.in पर CNR / केस नंबर से सत्यापित करें।',
+      'कानूनी सहायता / वकील से परामर्श लें; तारीख को अनदेखा न करें।',
+      'समय पर मूल दस्तावेज + 2 फोटोप्रति के साथ उपस्थित हों; मुहर लगी पावती लें।',
+      'उपस्थित न हो पाने पर तारीख से पहले स्थगन आवेदन दाखिल करें।'
+    ],
+    feesNoteEn: 'No fee for appearance. Certified copy charges as per court rules (nominal).',
+    feesNoteBn: 'হাজিরার জন্য কোনো ফি নেই। সত্যায়িত কপির জন্য নামমাত্র কোর্ট ফি।',
+    feesNoteHi: 'उपस्थिति हेतु कोई शुल्क नहीं। प्रमाणित प्रति हेतु नाममात्र न्यायालय शुल्क।',
+    warningsEn: 'Ignoring a summons can lead to ex-parte orders or warrants. Always verify on eCourts.',
+    warningsBn: 'সমন উপেক্ষা করলে একতরফা আদেশ বা ওয়ারেন্ট হতে পারে। ই-কোর্টে যাচাই করুন।',
+    warningsHi: 'समन की अनदेखी से एकतरफा आदेश या वारंट हो सकता है। ई-कोर्ट पर सत्यापित करें।'
+  },
+  {
+    id: 'swasthya-sathi-ayushman-card',
+    category: 'govt_schemes',
+    titleEn: 'Swasthya Sathi / Ayushman Card Enrolment & Hospital Claim',
+    titleBn: 'স্বাস্থ্যসাথী / আয়ুষ্মান কার্ড নথিভুক্তি ও হাসপাতাল সুবিধা',
+    titleHi: 'स्वास्थ्य साथी / आयुष्मान कार्ड नामांकन व अस्पताल लाभ',
+    departmentEn: 'Health & Family Welfare Dept., Govt. of West Bengal',
+    departmentBn: 'স্বাস্থ্য ও পরিবার কল্যাণ দপ্তর, পশ্চিমবঙ্গ সরকার',
+    departmentHi: 'स्वास्थ्य एवं परिवार कल्याण विभाग, पश्चिम बंगाल सरकार',
+    officialUrl: 'https://swasthyasathi.gov.in',
+    verificationDate: '2026-02-10',
+    summaryEn: 'Enrol for cashless treatment up to Rs. 5 lakh at empanelled hospitals and track card status.',
+    summaryBn: 'তালিকাভুক্ত হাসপাতালে ৫ লক্ষ টাকা পর্যন্ত নগদহীন চিকিৎসা ও কার্ড স্ট্যাটাস দেখার নিয়ম।',
+    summaryHi: 'सूचीबद्ध अस्पतालों में 5 लाख रुपये तक नकदरहित इलाज व कार्ड स्थिति देखने की प्रक्रिया।',
+    mandatoryDocsEn: ['Digital Ration Card / Khadya Sathi card', 'Aadhaar of family members', 'Mobile number', 'Residence proof'],
+    mandatoryDocsBn: ['ডিজিটাল রেশন / খাদ্যসাথী কার্ড', 'পরিবারের সদস্যদের আধার', 'মোবাইল নম্বর', 'ঠিকানার প্রমাণ'],
+    mandatoryDocsHi: ['डिजिटल राशन / खाद्य साथी कार्ड', 'परिवार के सदस्यों का आधार', 'मोबाइल नंबर', 'निवास प्रमाण'],
+    stepsEn: [
+      'Check eligibility on swasthyasathi.gov.in with registered mobile / URN.',
+      'Visit nearest Swasthya Sathi camp / empanelled hospital helpdesk for biometric enrolment.',
+      'Collect card / URN; verify hospital list before admission.',
+      'At admission show card + Aadhaar; hospital raises pre-auth; keep discharge summary.',
+      'For denial, call toll-free 1800-345-8393 and file grievance on portal.'
+    ],
+    stepsBn: [
+      'swasthyasathi.gov.in-এ মোবাইল / URN দিয়ে যোগ্যতা দেখুন।',
+      'নিকটতম স্বাস্থ্যসাথী ক্যাম্প / হাসপাতাল হেল্পডেস্কে বায়োমেট্রিক নথিভুক্তি করুন।',
+      'কার্ড / URN সংগ্রহ করুন; ভর্তির আগে হাসপাতাল তালিকা যাচাই করুন।',
+      'ভর্তির সময় কার্ড + আধার দেখান; ডিসচার্জ সামারি সংরক্ষণ করুন।',
+      'পরিষেবা না পেলে 1800-345-8393-এ কল করে পোর্টালে অভিযোগ করুন।'
+    ],
+    stepsHi: [
+      'swasthyasathi.gov.in पर मोबाइल / URN से पात्रता जांचें।',
+      'निकटतम स्वास्थ्य साथी शिविर / अस्पताल हेल्पडेस्क पर बायोमेट्रिक नामांकन कराएं।',
+      'कार्ड / URN प्राप्त करें; भर्ती से पहले अस्पताल सूची सत्यापित करें।',
+      'भर्ती के समय कार्ड + आधार दिखाएं; डिस्चार्ज सारांश सुरक्षित रखें।',
+      'सेवा न मिलने पर 1800-345-8393 पर कॉल कर पोर्टल पर शिकायत करें।'
+    ],
+    feesNoteEn: 'Free enrolment. No hospital may demand extra cash for covered packages.',
+    feesNoteBn: 'নথিভুক্তি বিনামূল্যে। আওতাভুক্ত প্যাকেজে হাসপাতাল বাড়তি টাকা নিতে পারে না।',
+    feesNoteHi: 'नामांकन निःशुल्क। कवर पैकेज हेतु अस्पताल अतिरिक्त राशि नहीं मांग सकता।',
+    warningsEn: 'Never share OTP with agents promising faster cards. Use only official camps/hospitals.',
+    warningsBn: 'দ্রুত কার্ডের প্রতিশ্রুতি দিয়ে OTP চাইলে দেবেন না। শুধু সরকারি ক্যাম্পে যান।',
+    warningsHi: 'तेज कार्ड का वादा कर OTP मांगे तो न दें। केवल आधिकारिक शिविरों में जाएं।'
+  },
+  {
+    id: 'oasis-aikyashree-scholarship-wb',
+    category: 'certificates',
+    titleEn: 'Oasis / Aikyashree Scholarship Application & Renewal',
+    titleBn: 'ওয়েসিস / ঐক্যশ্রী স্কলারশিপ আবেদন ও নবায়ন',
+    titleHi: 'ओएसिस / ऐक्यश्री छात्रवृत्ति आवेदन व नवीनीकरण',
+    departmentEn: 'Backward Classes Welfare / Minority Affairs Dept., Govt. of WB',
+    departmentBn: 'অনগ্রসর শ্রেণি কল্যাণ / সংখ্যালঘু বিষয়ক দপ্তর, পশ্চিমবঙ্গ সরকার',
+    departmentHi: 'पिछड़ा वर्ग कल्याण / अल्पसंख्यक कार्य विभाग, पश्चिम बंगाल सरकार',
+    officialUrl: 'https://oasis.gov.in',
+    verificationDate: '2026-01-25',
+    summaryEn: 'Apply / renew pre- and post-matric scholarships with income, caste, and marks verification.',
+    summaryBn: 'আয়, জাতি ও নম্বর যাচাইসহ প্রি- ও পোস্ট-ম্যাট্রিক বৃত্তির আবেদন / নবায়নের নিয়ম।',
+    summaryHi: 'आय, जाति व अंक सत्यापन सहित प्री- व पोस्ट-मैट्रिक छात्रवृत्ति आवेदन / नवीनीकरण प्रक्रिया।',
+    mandatoryDocsEn: ['Caste / minority certificate', 'Income certificate', 'Last marksheet', 'Bank passbook (DBT)', 'Bonafide / admission receipt'],
+    mandatoryDocsBn: ['জাতিগত / সংখ্যালঘু শংসাপত্র', 'আয়ের শংসাপত্র', 'শেষ পরীক্ষার মার্কশিট', 'ব্যাংক পাসবই (DBT)', 'বোনাফাইড / ভর্তির রসিদ'],
+    mandatoryDocsHi: ['जाति / अल्पसंख्यक प्रमाणपत्र', 'आय प्रमाणपत्र', 'अंतिम अंकपत्र', 'बैंक पासबुक (DBT)', 'बोनाफाइड / प्रवेश रसीद'],
+    stepsEn: [
+      'Register on oasis.gov.in (SC/ST/OBC) or wbmdfcscholarship.in (Aikyashree) with mobile.',
+      'Fill academic + bank (IFSC, account) details carefully; name must match bank.',
+      'Upload caste, income, marksheet, and bonafide PDFs under size limits.',
+      'Submit and get Application ID; get institute verification (HoI login) done.',
+      'Track status; correct defects within window; DBT comes to Aadhaar-seeded account.'
+    ],
+    stepsBn: [
+      'মোবাইল দিয়ে oasis.gov.in (SC/ST/OBC) বা wbmdfcscholarship.in (ঐক্যশ্রী)-এ নিবন্ধন করুন।',
+      'একাডেমিক + ব্যাংক (IFSC, অ্যাকাউন্ট) তথ্য সতর্কে লিখুন; নাম ব্যাংকের সঙ্গে মিলতে হবে।',
+      'জাতি, আয়, মার্কশিট ও বোনাফাইড PDF সাইজ মেনে আপলোড করুন।',
+      'জমা দিয়ে Application ID নিন; প্রতিষ্ঠান যাচাই (HoI লগইন) করান।',
+      'স্ট্যাটাস দেখুন; ত্রুটি থাকলে সময়ের মধ্যে সংশোধন করুন; DBT আধার-লিংক অ্যাকাউন্টে আসে।'
+    ],
+    stepsHi: [
+      'मोबाइल से oasis.gov.in (SC/ST/OBC) या wbmdfcscholarship.in (ऐक्यश्री) पर पंजीकरण करें।',
+      'शैक्षणिक + बैंक (IFSC, खाता) विवरण सावधानी से भरें; नाम बैंक से मिलना चाहिए।',
+      'जाति, आय, अंकपत्र व बोनाफाइड PDF सीमा में अपलोड करें।',
+      'जमा कर Application ID लें; संस्थान सत्यापन (HoI लॉगिन) कराएं।',
+      'स्थिति ट्रैक करें; त्रुटि समय पर सुधारें; DBT आधार-लिंक खाते में आता है।'
+    ],
+    feesNoteEn: 'Free application. Cyber-cafe charges are unofficial.',
+    feesNoteBn: 'আবেদন বিনামূল্যে। সাইবার ক্যাফে চার্জ বেসরকারি।',
+    feesNoteHi: 'आवेदन निःशुल्क। साइबर कैफे शुल्क अनौपचारिक है।',
+    warningsEn: 'Deadline extensions are rare; institute verification is mandatory — follow up with HoI.',
+    warningsBn: 'সময়সীমা বাড়ানো বিরল; প্রতিষ্ঠান যাচাই বাধ্যতামূলক — HoI-এর সঙ্গে যোগাযোগ রাখুন।',
+    warningsHi: 'समय-सीमा विस्तार दुर्लभ; संस्थान सत्यापन अनिवार्य — HoI से संपर्क रखें।'
+  },
+  {
+    id: 'municipal-property-tax-wb',
+    category: 'bills',
+    titleEn: 'Municipal Property Tax Assessment & Payment',
+    titleBn: 'পুরসভা সম্পত্তি কর নির্ধারণ ও পরিশোধ',
+    titleHi: 'नगरपालिका संपत्ति कर निर्धारण व भुगतान',
+    departmentEn: 'Municipal Corporation / Municipality, Govt. of West Bengal',
+    departmentBn: 'পৌরনিগম / পৌরসভা, পশ্চিমবঙ্গ সরকার',
+    departmentHi: 'नगर निगम / नगरपालिका, पश्चिम बंगाल सरकार',
+    officialUrl: 'https://www.wburbanservices.gov.in',
+    verificationDate: '2026-01-18',
+    summaryEn: 'Verify assessment notice, pay quarterly property tax online, and collect e-receipt to avoid penalties.',
+    summaryBn: 'নির্ধারণ নোটিশ যাচাই, ত্রৈমাসিক সম্পত্তি কর অনলাইনে পরিশোধ ও ই-রসিদ সংগ্রহ করে জরিমানা এড়ান।',
+    summaryHi: 'निर्धारण नोटिस सत्यापित करें, त्रैमासिक संपत्ति कर ऑनलाइन चुकाएं व ई-रसीद लेकर जुर्माने से बचें।',
+    mandatoryDocsEn: ['Holding / premises number', 'Last tax receipt', 'Ownership deed / mutation record', 'Mobile for OTP'],
+    mandatoryDocsBn: ['হোল্ডিং / প্রাঙ্গণ নম্বর', 'শেষ করের রসিদ', 'মালিকানা দলিল / মিউটেশন রেকর্ড', 'OTP-এর জন্য মোবাইল'],
+    mandatoryDocsHi: ['होल्डिंग / परिसर संख्या', 'अंतिम कर रसीद', 'स्वामित्व विलेख / म्यूटेशन रिकॉर्ड', 'OTP हेतु मोबाइल'],
+    stepsEn: [
+      'Find holding number from notice; verify dues on wburbanservices.gov.in / KMC portal.',
+      'Check rebate window (quarterly) vs penalty slab before paying.',
+      'Pay via portal (UPI/card); download e-receipt with transaction ID.',
+      'For wrong assessment, file objection at borough office with deed + prior receipts.',
+      'Keep receipts for mutation / trade-license linkage.'
+    ],
+    stepsBn: [
+      'নোটিশ থেকে হোল্ডিং নম্বর নিন; wburbanservices.gov.in / KMC পোর্টালে বকেয়া যাচাই করুন।',
+      'পেমেন্টের আগে ছাড়ের সময় বনাম জরিমানা স্ল্যাব দেখুন।',
+      'পোর্টালে (UPI/কার্ড) পেমেন্ট করে ট্রানজ্যাকশন ID-সহ ই-রসিদ নিন।',
+      'ভুল নির্ধারণ হলে দলিল + পুরনো রসিদসহ বরো অফিসে আপত্তি জানান।',
+      'মিউটেশন / ট্রেড লাইসেন্সের জন্য রসিদ সংরক্ষণ করুন।'
+    ],
+    stepsHi: [
+      'नोटिस से होल्डिंग नंबर लें; wburbanservices.gov.in / KMC पोर्टल पर बकाया जांचें।',
+      'भुगतान से पहले छूट अवधि बनाम जुर्माना स्लैब देखें।',
+      'पोर्टल (UPI/कार्ड) से भुगतान कर ट्रांजैक्शन ID सहित ई-रसीद लें।',
+      'गलत निर्धारण पर विलेख + पुरानी रसीदों सहित बरो कार्यालय में आपत्ति दें।',
+      'म्यूटेशन / ट्रेड लाइसेंस हेतु रसीदें सुरक्षित रखें।'
+    ],
+    feesNoteEn: 'Rebate up to 10% on timely quarterly payment; 10%+ penalty + interest on default (varies by ULB).',
+    feesNoteBn: 'সময়মতো ত্রৈমাসিক পেমেন্টে ১০% পর্যন্ত ছাড়; বকেয়ায় ১০%+ জরিমানা ও সুদ (ULB ভেদে)।',
+    feesNoteHi: 'समय पर त्रैमासिक भुगतान पर 10% तक छूट; बकाया पर 10%+ जुर्माना व ब्याज (ULB अनुसार)।',
+    warningsEn: 'Do not pay to collectors without printed e-receipt / POS receipt. Verify holding number twice.',
+    warningsBn: 'ছাপা ই-রসিদ ছাড়া কারো হাতে টাকা দেবেন না। হোল্ডিং নম্বর দুবার যাচাই করুন।',
+    warningsHi: 'मुद्रित ई-रसीद के बिना किसी को भुगतान न करें। होल्डिंग नंबर दो बार जांचें।'
   }
 ];
 
