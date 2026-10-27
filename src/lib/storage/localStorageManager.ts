@@ -16,8 +16,10 @@ export interface StoredDocumentRecord {
   };
 }
 
-const STORAGE_KEY = 'jibonsathi_saved_documents';
-const PREFS_KEY = 'jibonsathi_user_preferences';
+const STORAGE_KEY = 'sahay_saved_documents';
+const PREFS_KEY = 'sahay_user_preferences';
+const LEGACY_STORAGE_KEY = 'jibonsathi_saved_documents';
+const LEGACY_PREFS_KEY = 'jibonsathi_user_preferences';
 
 export interface UserPreferences {
   fontSize: 'normal' | 'large' | 'extralarge';
@@ -48,7 +50,15 @@ export const localStorageManager = {
   getPreferences(): UserPreferences {
     if (typeof window === 'undefined') return defaultPreferences;
     try {
-      const raw = localStorage.getItem(PREFS_KEY);
+      let raw = localStorage.getItem(PREFS_KEY);
+      if (!raw) {
+        // Transparent migration from legacy key
+        raw = localStorage.getItem(LEGACY_PREFS_KEY);
+        if (raw) {
+          localStorage.setItem(PREFS_KEY, raw);
+          localStorage.removeItem(LEGACY_PREFS_KEY);
+        }
+      }
       if (raw) return { ...defaultPreferences, ...JSON.parse(raw) };
     } catch {
       // ignore
@@ -70,7 +80,15 @@ export const localStorageManager = {
   getSavedDocuments(): StoredDocumentRecord[] {
     if (typeof window === 'undefined') return [];
     try {
-      const raw = localStorage.getItem(STORAGE_KEY);
+      let raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) {
+        // Transparent migration from legacy key
+        raw = localStorage.getItem(LEGACY_STORAGE_KEY);
+        if (raw) {
+          localStorage.setItem(STORAGE_KEY, raw);
+          localStorage.removeItem(LEGACY_STORAGE_KEY);
+        }
+      }
       if (raw) return safeParse<StoredDocumentRecord[]>(raw, []);
     } catch {
       // ignore
@@ -203,6 +221,8 @@ export const localStorageManager = {
     try {
       localStorage.removeItem(STORAGE_KEY);
       localStorage.removeItem(PREFS_KEY);
+      localStorage.removeItem(LEGACY_STORAGE_KEY);
+      localStorage.removeItem(LEGACY_PREFS_KEY);
       // clear ephemeral progress + audit-adjacent keys but keep audit for accountability
       const keys: string[] = [];
       for (let i = 0; i < localStorage.length; i++) {
