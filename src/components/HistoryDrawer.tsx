@@ -24,8 +24,20 @@ export const HistoryDrawer: React.FC<HistoryDrawerProps> = ({
   onRefreshHistory,
 }) => {
   const t = translations[language];
+  const [query, setQuery] = React.useState('');
 
   if (!isOpen) return null;
+
+  const filtered = (() => {
+    const q = query.trim().toLowerCase();
+    if (!q) return savedDocuments;
+    return savedDocuments.filter(
+      (r) =>
+        r.documentType.toLowerCase().includes(q) ||
+        r.fileName.toLowerCase().includes(q) ||
+        r.summary.toLowerCase().includes(q)
+    );
+  })();
 
   const handleDelete = (e: React.MouseEvent, id: string) => {
     e.stopPropagation();
@@ -100,7 +112,7 @@ export const HistoryDrawer: React.FC<HistoryDrawerProps> = ({
           display: 'flex',
           gap: '0.5rem',
           alignItems: 'center',
-          marginBottom: '1rem',
+          marginBottom: '0.75rem',
         }}>
           <ShieldCheck size={16} style={{ flexShrink: 0 }} />
           <span>
@@ -110,15 +122,24 @@ export const HistoryDrawer: React.FC<HistoryDrawerProps> = ({
           </span>
         </div>
 
+        {/* Search */}
+        <input
+          type="text"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          placeholder={language === 'bn' ? 'নথি খুঁজুন (বিল, রেশন, KYC...)' : 'Search saved docs...'}
+          style={{ padding: '0.55rem 0.75rem', borderRadius: 'var(--radius-sm)', border: '1px solid var(--color-border)', fontSize: '0.85rem', marginBottom: '0.75rem', width: '100%' }}
+        />
+
         {/* List of Documents */}
         <div style={{ flex: 1, overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-          {savedDocuments.length === 0 ? (
+          {filtered.length === 0 ? (
             <div style={{ textAlign: 'center', padding: '3rem 1rem', color: 'var(--color-text-muted)' }}>
               <FileText size={36} style={{ margin: '0 auto 0.75rem', opacity: 0.5 }} />
-              <p style={{ fontSize: '0.9rem' }}>{t.historyEmpty}</p>
+              <p style={{ fontSize: '0.9rem' }}>{query ? (language === 'bn' ? 'কোনো মিল পাওয়া যায়নি।' : 'No matches found.') : t.historyEmpty}</p>
             </div>
           ) : (
-            savedDocuments.map((record) => (
+            filtered.map((record) => (
               <div
                 key={record.id}
                 onClick={() => {
