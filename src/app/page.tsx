@@ -9,10 +9,13 @@ import { AppHeader } from '@/components/AppHeader';
 import { LandingHero } from '@/components/LandingHero';
 import { DocumentDropzone } from '@/components/DocumentDropzone';
 import { DocumentWorkspace } from '@/components/DocumentWorkspace';
+import { DeadlineDashboard } from '@/components/DeadlineDashboard';
 import { VoiceAssistant } from '@/components/VoiceAssistant';
 import { ProcedureGuideModal } from '@/components/ProcedureGuideModal';
 import { HistoryDrawer } from '@/components/HistoryDrawer';
 import { AccessibilitySettingsModal } from '@/components/AccessibilitySettingsModal';
+import { auditLog } from '@/lib/storage/auditLog';
+import { cloudSync } from '@/lib/storage/cloudSync';
 import { Sparkles, ArrowRight, ShieldCheck, FileText, CheckCircle2 } from 'lucide-react';
 
 export default function HomePage() {
@@ -92,7 +95,10 @@ export default function HomePage() {
   };
 
   const handleSaveActiveDocument = (doc: DocumentAnalysis) => {
-    localStorageManager.saveDocument(doc);
+    const rec = localStorageManager.saveDocument(doc);
+    auditLog.append('analysis', `Saved ${doc.document_type.label}`, rec.id);
+    // best-effort cloud sync (no-op when Supabase unconfigured)
+    cloudSync.syncDocument({ ...doc, id: rec.id }).catch(() => undefined);
     handleRefreshHistory();
   };
 
@@ -111,7 +117,15 @@ export default function HomePage() {
         await new Promise(r => setTimeout(r, 400));
 
         const analysisData = samplePreset.analysis[language] || samplePreset.analysis['en'];
-        setActiveAnalysis({ ...analysisData, id: samplePreset.id });
+        const withId = { ...analysisData, id: samplePreset.id };
+        auditLog.append('analysis', `Opened sample ${samplePreset.id}`, samplePreset.id);
+        // restore progress if returning to a sample
+        const prog = localStorageManager.getProgress(samplePreset.id);
+        if (prog) {
+          withId.action_steps = withId.action_steps.map(s => ({ ...s, completed: prog.completedSteps.includes(s.id) }));
+          withId.required_documents = withId.required_documents.map(d => ({ ...d, collected: prog.collectedDocs.includes(d.id) }));
+        }
+        setActiveAnalysis(withId);
         setView('workspace');
         return;
       }
@@ -130,6 +144,7 @@ export default function HomePage() {
         if (res.ok) {
           const json = await res.json();
           if (json.analysis) {
+            auditLog.append('analysis', `Analyzed ${json.analysis.document_type?.label || file.name}`, json.analysis.id);
             setActiveAnalysis(json.analysis);
             setView('workspace');
           }
@@ -187,6 +202,16 @@ export default function HomePage() {
                 statusMessage={statusMessage}
               />
             </div>
+
+            {/* Upcoming deadlines across saved docs */}
+            <DeadlineDashboard
+              language={language}
+              refreshKey={savedDocs.length}
+              onSelectDocument={(doc) => {
+                setActiveAnalysis(doc);
+                setView('workspace');
+              }}
+            />
           </div>
         )}
 
