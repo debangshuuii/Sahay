@@ -336,7 +336,7 @@ export default function HomePage() {
             color: 'var(--color-text-light)',
           }}>
             <div>
-              © 2026 JibonSathi AI. Built for citizen administrative empowerment and social impact.
+              © 2026 Sahay (सहाय). Built for citizen administrative empowerment and social impact.
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
               <ShieldCheck size={14} color="var(--color-primary)" />
