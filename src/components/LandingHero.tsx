@@ -173,7 +173,7 @@ export const LandingHero: React.FC<LandingHeroProps> = ({
                 </p>
               </div>
 
-              {/* Right Side: After (JibonSathi Plain Guide) */}
+              {/* Right Side: After (Sahay Plain Guide) */}
               <div style={{
                 backgroundColor: 'var(--color-primary-light)',
                 borderRadius: 'var(--radius-md)',
@@ -190,7 +190,7 @@ export const LandingHero: React.FC<LandingHeroProps> = ({
                   fontSize: '0.95rem',
                 }}>
                   <CheckCircle2 size={18} />
-                  {language === 'bn' ? 'জীবনসাথী এআই-এর সহজ ব্যাখ্যা ও চেকলিস্ট' : language === 'hi' ? 'जीवनसाथी एआई का सरल समाधान व चेकलिस्ट' : 'JibonSathi AI Plain-Language Checklist'}
+                  {language === 'bn' ? 'সহায় (Sahay)-এর সহজ ব্যাখ্যা ও চেকলিস্ট' : language === 'hi' ? 'सहाय (Sahay) का सरल समाधान व चेकलिस्ट' : 'Sahay Plain-Language Checklist'}
                 </div>
 
                 <div style={{
